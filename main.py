@@ -1,3 +1,4 @@
+#!venv/bin/python
 from utils import *
 import subprocess
 import os
