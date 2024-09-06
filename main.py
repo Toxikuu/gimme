@@ -11,12 +11,13 @@ import time
 import argparse
 
 class Package:
-    def __init__(self, name, version, url, build_command="", install_command=""):
+    def __init__(self, name, version, url, build_command="", install_command="", remove_command=""):
         self.name = name
         self.version = version
         self.url = url
         self.build_command = build_command
         self.install_command = install_command
+        self.remove_command = remove_command
         self.tarball = None
 
     def __repr__(self):
@@ -105,18 +106,22 @@ class PackageManager:
 
     def uninstall(self, package):
         msg(f"Uninstalling {package}...")
+        os.chdir(repr(package))
+        if package.remove_command:
+            subprocess.run(package.remove_command.split(), check=True)
+        os.chdir("..")
 
     def track_package(self, package, action):
         match action:
             case "remove":
-                with open(self.tracking_file, 'r+') as f:
+                with open(os.path.join('..', self.tracking_file), 'r+') as f:
                     lines = f.readlines()
                     lines = [line for line in lines if repr(package) not in line]
                     f.seek(0)
                     f.writelines(lines)
                     f.truncate()
             case "add":
-                with open(self.tracking_file, 'a') as f:
+                with open(os.path.join('..', self.tracking_file), 'a') as f:
                     f.write(repr(package) + '\n')
 
     def list_installed(self):
@@ -132,12 +137,12 @@ class PackageManager:
         self.build(package)
         self.install(package)
         self.clean_up(package)
-        self.track_package("add", package)
+        self.track_package(package, "add")
 
     def remove_package(self, package):
         self.uninstall(package)
         self.clean_up(package, and_dir=True)
-        self.track_package("remove", package)
+        self.track_package(package, "remove")
 
 
 class ControlPanel:
@@ -153,7 +158,8 @@ class ControlPanel:
                 version=data.get("version"),
                 url=data.get("url"),
                 build_command=data.get("build_command", ""),
-                install_command=data.get("install_command", "")
+                install_command=data.get("install_command", ""),
+                remove_command=data.get("remove_command", "")
                 )
         return package
 
@@ -162,6 +168,7 @@ class ControlPanel:
         parser = argparse.ArgumentParser(description="Tox's source-based package manager")
 
         parser.add_argument("-g", "--get", type=str, help="get <package>")
+        parser.add_argument("-r", "--remove", type=str, help="remove <package>")
         parser.add_argument("-l", "--list", action="store_true", help="list installed packages")
         parser.add_argument("-v", "--verbose", action="store_true", help="increase output verbosity")
 
@@ -173,6 +180,11 @@ class ControlPanel:
             package = self.load_package_from_json(args.get)
             print(f" [i] Getting {package}...")
             self.package_manager.get_package(package)
+
+        if args.remove:
+            package = self.load_package_from_json(args.remove)
+            print(f" [i] Removing {package}...")
+            self.package_manager.remove_package(package)
 
         if args.list:
             self.package_manager.list_installed()
