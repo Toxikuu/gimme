@@ -1,4 +1,9 @@
 #!venv/bin/python
+#TODO: Migrate from json to yaml for the meta files
+#TODO: Improve error handling (especially for removing files, overwriting stuff in the src dir, etc)
+#TODO: Add a quiet option (can be done by adding a variable "> /dev/null" for commands)
+#TODO: Implement dependency resolution
+#TODO: Add more meta files
 from utils import *
 import subprocess
 import os
@@ -85,7 +90,7 @@ class PackageManager:
 
             os.chdir(new_name)
             if package.build_command:
-                subprocess.run(package.build_command.split(), check=True)
+                subprocess.run(package.build_command, shell=True, check=True)
             os.chdir("..")
         else:
             erm(f"Tarball not found.")
@@ -94,7 +99,7 @@ class PackageManager:
         msg(f"Installing {package}...")
         os.chdir(repr(package))
         if package.install_command:
-            subprocess.run(package.install_command.split(), check=True)
+            subprocess.run(package.install_command, shell=True, check=True)
         os.chdir("..")
 
     def clean_up(self, package, and_dir=False):
@@ -108,7 +113,7 @@ class PackageManager:
         msg(f"Uninstalling {package}...")
         os.chdir(repr(package))
         if package.remove_command:
-            subprocess.run(package.remove_command.split(), check=True)
+            subprocess.run(package.remove_command, shell=True, check=True)
         os.chdir("..")
 
     def track_package(self, package, action):
