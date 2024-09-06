@@ -23,23 +23,21 @@ class Package:
         return f"{self.name}-{self.version}"
 
 class PackageManager:
-    def __init__(self):
-        self.sources_directory = None
-        self.meta_directory = None
-        self.tracking_file = None
+    def __init__(self, sources_directory, meta_directory, tracking_file):
+        self.sources_directory = sources_directory
+        self.meta_directory = meta_directory
+        self.tracking_file = tracking_file
+
+        with open(tracking_file, 'r') as f:
+            lines = f.readlines()
+            lines = [l.strip() for l in lines if l.strip() != '']
+        self.installed_packages = lines
         
         os.chdir(self.sources_directory)
 
-    def read_config(self, config_file):
-        cfg = configparser.ConfigParser()
-        cfg.read('gimme.conf')
-        self.sources_directory = cfg['Directories']['sources']
-        self.meta_directory = cfg['Directories']['meta']
-        self.tracking_file = cfg['Files']['tracking']
-
     def make_config_dirs(self):
-        os.makedirs(self.sources_directory, exist_ok=True)
-        os.makedirs(self.meta_directory, exist_ok=True)
+        os.makedirs(os.path.join('..', self.sources_directory), exist_ok=True)
+        os.makedirs(os.path.join('..', self.meta_directory), exist_ok=True)
 
     def fetch_source(self, package):
         msg(f"Fetching source for {package}...")
@@ -98,7 +96,7 @@ class PackageManager:
             subprocess.run(package.install_command.split(), check=True)
         os.chdir("..")
 
-    def clean_up(self, package, and_dir=False)
+    def clean_up(self, package, and_dir=False):
         if os.path.exists(f"{package}.tox"):
             subprocess.run(["rm", "-vf", f"{package}.tox"])
         if and_dir:
@@ -141,12 +139,13 @@ class PackageManager:
         self.clean_up(package, and_dir=True)
         self.track_package("remove", package)
 
+
 class ControlPanel:
     def __init__(self, package_manager):
         self.package_manager = package_manager
         
     def load_package_from_json(self, pkg):
-        with open(os.path.join(self.package_manager.meta_directory, f"{pkg}.json"), 'r') as j:
+        with open(os.path.join('..', self.package_manager.meta_directory, f"{pkg}.json"), 'r') as j:
             data = json.load(j)
 
         package = Package(
@@ -158,11 +157,12 @@ class ControlPanel:
                 )
         return package
 
+
     def handle_args(self):
         parser = argparse.ArgumentParser(description="Tox's source-based package manager")
 
         parser.add_argument("-g", "--get", type=str, help="get <package>")
-        parser.add_argumment("-l", "--list", action="store_true", help="list installed packages")
+        parser.add_argument("-l", "--list", action="store_true", help="list installed packages")
         parser.add_argument("-v", "--verbose", action="store_true", help="increase output verbosity")
 
         return parser.parse_args()
@@ -180,10 +180,21 @@ class ControlPanel:
         if args.verbose:
             print("Verbose enabled")
 
+def read_config(config_file):
+    cfg = configparser.ConfigParser()
+    cfg.read(config_file)
+    return cfg
 
 if __name__ == "__main__":
-    pm = PackageManager()
-    pm.read_config("gimme.conf")
+
+    cfg = read_config("gimme.conf")
+
+    pm = PackageManager(
+            sources_directory = cfg["Directories"]["sources"],
+            meta_directory = cfg["Directories"]["meta"],
+            tracking_file = cfg["Files"]["tracking"]
+            )
+
     pm.make_config_dirs()
 
     control = ControlPanel(pm)
