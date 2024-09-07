@@ -15,11 +15,10 @@ import time
 import argparse
 
 class Package:
-    def __init__(self, name, version, url, build_command="", install_command="", remove_command=""):
+    def __init__(self, name, version, url, install_command="", remove_command=""):
         self.name = name
         self.version = version
         self.url = url
-        self.build_command = build_command
         self.install_command = install_command
         self.remove_command = remove_command
         self.tarball = f"{self.name}-{self.version}.tox"
@@ -72,8 +71,8 @@ class PackageManager:
             subprocess.run(f"rm -rv {temp_dir}", shell=True, check=True)
 
             os.chdir(repr(package))
-            if package.build_command:
-                subprocess.run(package.build_command, shell=True, check=True)
+            if package.install_command:
+                subprocess.run(package.install_command, shell=True, check=True)
             os.chdir("..")
         else:
             erm(f"Tarball not found.")
@@ -145,7 +144,6 @@ class ControlPanel:
                 name=data.get("name"),
                 version=data.get("version"),
                 url=data.get("url"),
-                build_command=data.get("build_command", ""),
                 install_command=data.get("install_command", ""),
                 remove_command=data.get("remove_command", "")
                 )
