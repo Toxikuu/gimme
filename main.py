@@ -1,4 +1,4 @@
-#!venv/bin/python
+#!/bin/python
 #TODO: Migrate from json to yaml for the meta files
 #TODO: Improve error handling (especially for removing files, overwriting stuff in the src dir, etc)
 #TODO: Add a quiet option (can be done by adding a variable "> /dev/null" for commands)
@@ -9,9 +9,8 @@ import subprocess
 import os
 import urllib.parse
 import shutil
-import json
+import yaml
 import configparser
-import json
 import time
 import argparse
 
@@ -23,7 +22,7 @@ class Package:
         self.build_command = build_command
         self.install_command = install_command
         self.remove_command = remove_command
-        self.tarball = None
+        self.tarball = f"{self.name}-{self.version}.tox"
 
     def __repr__(self):
         return f"{self.name}-{self.version}"
@@ -39,6 +38,8 @@ class PackageManager:
             lines = [l.strip() for l in lines if l.strip() != '']
         self.installed_packages = lines
         
+        subprocess.run("source ./gimme.env", shell=True, check=True)
+        subprocess.run("echo $XORG_PREFIX $XORG_CONFIG $MAKEFLAGS", shell=True, check=True)
         os.chdir(self.sources_directory)
 
     def make_config_dirs(self):
@@ -47,10 +48,11 @@ class PackageManager:
 
     def fetch_source(self, package):
         msg(f"Fetching source for {package}...")
+        if os.path.isfile(package.tarball):
+            msg(f"tarball {package.tarball} already exists")
+            return
         url_path = urllib.parse.urlparse(package.url).path
         filename = os.path.basename(url_path)
-
-        package.tarball = f"{package}.tox"
 
         subprocess.run(["wget", package.url, "-O", package.tarball], check=True)
         msg(f"Source fetched and saved as {package.tarball}")
@@ -63,32 +65,13 @@ class PackageManager:
             temp_dir = "temp_extract"
             os.makedirs(temp_dir, exist_ok=True)
 
-            subprocess.run(["tar", "xvf", package.tarball, "-C", temp_dir], check=True)
-            
-            extracted_dir = None
-            for item in os.listdir(temp_dir):
-                item_path = os.path.join(temp_dir, item)
-                if os.path.isdir(item_path):
-                    extracted_dir = item_path
-                    break
+            if os.path.isdir(repr(package)):
+                subprocess.run(f"rm -rvf ./{package}", shell=True, check=True)
+            subprocess.run(f"tar xvf {package.tarball} -C {temp_dir}", shell=True, check=True)
+            subprocess.run(f"mv -v temp_extract/* ./{package}", shell=True, check=True)
+            subprocess.run(f"rm -rv {temp_dir}", shell=True, check=True)
 
-            if extracted_dir:
-                new_name = repr(package)
-                new_path = os.path.join("temp_extract", new_name)
-
-                if os.path.exists(new_path):
-                    shutil.rmtree(new_path)
-
-                os.rename(extracted_dir, new_path)
-                msg(f"Renamed directory to {new_name}")
-
-            if os.path.exists(new_path):
-                subprocess.run(["mv", "-vf", new_path, "."], check=True)
-                msg(f"Moved {new_name} to sources directory.")
-
-            os.rmdir(temp_dir)
-
-            os.chdir(new_name)
+            os.chdir(repr(package))
             if package.build_command:
                 subprocess.run(package.build_command, shell=True, check=True)
             os.chdir("..")
@@ -154,9 +137,9 @@ class ControlPanel:
     def __init__(self, package_manager):
         self.package_manager = package_manager
         
-    def load_package_from_json(self, pkg):
-        with open(os.path.join('..', self.package_manager.meta_directory, f"{pkg}.json"), 'r') as j:
-            data = json.load(j)
+    def load_package_from_yaml(self, pkg):
+        with open(os.path.join('..', self.package_manager.meta_directory, f"{pkg}.yaml"), 'r') as y:
+            data = yaml.safe_load(y)
 
         package = Package(
                 name=data.get("name"),
@@ -182,12 +165,12 @@ class ControlPanel:
     def run(self):
         args = self.handle_args()
         if args.get:
-            package = self.load_package_from_json(args.get)
+            package = self.load_package_from_yaml(args.get)
             print(f" [i] Getting {package}...")
             self.package_manager.get_package(package)
 
         if args.remove:
-            package = self.load_package_from_json(args.remove)
+            package = self.load_package_from_yaml(args.remove)
             print(f" [i] Removing {package}...")
             self.package_manager.remove_package(package)
 
