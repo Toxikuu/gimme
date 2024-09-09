@@ -77,12 +77,12 @@ class PackageManager:
         else:
             erm(f"Tarball not found.")
 
-    def install(self, package):
-        msg(f"Installing {package}...")
-        os.chdir(repr(package))
-        if package.install_command:
-            subprocess.run(package.install_command, shell=True, check=True)
-        os.chdir("..")
+    # def install(self, package):
+    #     msg(f"Installing {package}...")
+    #     os.chdir(repr(package))
+    #     if package.install_command:
+    #         subprocess.run(package.install_command, shell=True, check=True)
+    #     os.chdir("..")
 
     def clean_up(self, package, and_dir=False):
         if os.path.exists(f"{package}.tox"):
@@ -122,7 +122,7 @@ class PackageManager:
     def get_package(self, package):
         self.fetch_source(package)
         self.build(package)
-        self.install(package)
+        # self.install(package)
         self.clean_up(package)
         self.track_package(package, "add")
 
