@@ -13,18 +13,42 @@ import yaml
 import configparser
 import time
 import argparse
+import string
+from pprint import pprint as pp
 
 class Package:
-    def __init__(self, name, version, url, install_command="", remove_command=""):
+    def __init__(self, name, version, url, get="", remove=""):
         self.name = name
         self.version = version
         self.url = url
-        self.install_command = install_command
-        self.remove_command = remove_command
+        self.get = get
+        self.remove = remove
         self.tarball = f"{self.name}-{self.version}.tox"
 
     def __repr__(self):
         return f"{self.name}-{self.version}"
+
+def interpolate(metafile):
+    with open(metafile, 'r') as f:
+        data = yaml.safe_load(f)
+
+    version = data['version']
+    minor_version = '.'.join(version.split('.')[:2])
+
+    url_template = string.Template(data['url'])
+    data['url'] = url_template.safe_substitute(
+            version=version,
+            minor_version=minor_version
+            )
+    # pp(data)
+    # time.sleep(15)
+
+    get_template = string.Template(data['get'])
+    data['get'] = get_template.safe_substitute(version=data['version'])
+
+    remove_template = string.Template(data['remove'])
+    data['remove'] = remove_template.safe_substitute(version=data['version'])
+    return data
 
 class PackageManager:
     def __init__(self, sources_directory, meta_directory, tracking_file):
@@ -37,8 +61,8 @@ class PackageManager:
             lines = [l.strip() for l in lines if l.strip() != '']
         self.installed_packages = lines
         
-        subprocess.run("source ./gimme.env", shell=True, check=True)
-        subprocess.run("echo $XORG_PREFIX $XORG_CONFIG $MAKEFLAGS", shell=True, check=True)
+        # subprocess.run("echo -e \"$XORG_PREFIX\n$XORG_CONFIG\n$MAKEFLAGS\n\"", shell=True, check=True)
+        # time.sleep(5)
         os.chdir(self.sources_directory)
 
     def make_config_dirs(self):
@@ -48,7 +72,7 @@ class PackageManager:
     def fetch_source(self, package):
         msg(f"Fetching source for {package}...")
         if os.path.isfile(package.tarball):
-            msg(f"tarball {package.tarball} already exists")
+            msg(f"Tarball {package.tarball} already exists")
             return
         url_path = urllib.parse.urlparse(package.url).path
         filename = os.path.basename(url_path)
@@ -66,23 +90,17 @@ class PackageManager:
 
             if os.path.isdir(repr(package)):
                 subprocess.run(f"rm -rvf ./{package}", shell=True, check=True)
+
             subprocess.run(f"tar xvf {package.tarball} -C {temp_dir}", shell=True, check=True)
             subprocess.run(f"mv -v temp_extract/* ./{package}", shell=True, check=True)
             subprocess.run(f"rm -rv {temp_dir}", shell=True, check=True)
 
             os.chdir(repr(package))
-            if package.install_command:
-                subprocess.run(package.install_command, shell=True, check=True)
+            if package.get:
+                subprocess.run(package.get, shell=True, check=True)
             os.chdir("..")
         else:
             erm(f"Tarball not found.")
-
-    # def install(self, package):
-    #     msg(f"Installing {package}...")
-    #     os.chdir(repr(package))
-    #     if package.install_command:
-    #         subprocess.run(package.install_command, shell=True, check=True)
-    #     os.chdir("..")
 
     def clean_up(self, package, and_dir=False):
         if os.path.exists(f"{package}.tox"):
@@ -94,8 +112,8 @@ class PackageManager:
     def uninstall(self, package):
         msg(f"Uninstalling {package}...")
         os.chdir(repr(package))
-        if package.remove_command:
-            subprocess.run(package.remove_command, shell=True, check=True)
+        if package.remove:
+            subprocess.run(package.remove, shell=True, check=True)
         os.chdir("..")
 
     def track_package(self, package, action):
@@ -108,8 +126,17 @@ class PackageManager:
                     f.writelines(lines)
                     f.truncate()
             case "add":
-                with open(os.path.join('..', self.tracking_file), 'a') as f:
-                    f.write(repr(package) + '\n')
+                with open(os.path.join('..', self.tracking_file), 'r+') as f:
+                    lines = f.read().splitlines()
+                    lines = list(dict.fromkeys(lines))
+                    newline = repr(package)
+                    if newline not in lines:
+                        lines.append(newline)
+                        f.seek(0)
+                        f.writelines('\n'.join(lines)+'\n')
+                        f.truncate()
+                    else:
+                        msg(f"Package '{package}' already tracked.")
 
     def list_installed(self):
         if not self.installed_packages:
@@ -122,7 +149,6 @@ class PackageManager:
     def get_package(self, package):
         self.fetch_source(package)
         self.build(package)
-        # self.install(package)
         self.clean_up(package)
         self.track_package(package, "add")
 
@@ -137,15 +163,13 @@ class ControlPanel:
         self.package_manager = package_manager
         
     def load_package_from_yaml(self, pkg):
-        with open(os.path.join('..', self.package_manager.meta_directory, f"{pkg}.yaml"), 'r') as y:
-            data = yaml.safe_load(y)
-
+        data = interpolate(os.path.join('..', self.package_manager.meta_directory, f"{pkg}.yaml"))
         package = Package(
                 name=data.get("name"),
                 version=data.get("version"),
                 url=data.get("url"),
-                install_command=data.get("install_command", ""),
-                remove_command=data.get("remove_command", "")
+                get=data.get("get", ""),
+                remove=data.get("remove", "")
                 )
         return package
 
