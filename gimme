@@ -1,1 +1,13 @@
-main.py
+#!/bin/bash
+
+. ./gimme.env
+
+cat << EOF
+ENVIRONMENT VARIABLES:
+MAKEFLAGS   = $MAKEFLAGS
+XORG_PREFIX = $XORG_PREFIX
+XORG_CONFIG = $XORG_CONFIG
+
+EOF
+
+python main.py "$@"
