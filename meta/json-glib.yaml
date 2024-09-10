@@ -1,0 +1,8 @@
+name: "json-glib"
+version: "1.10.0"
+url: "https://download.gnome.org/sources/json-glib/${minor_version}/json-glib-${version}.tar.xz"
+get: |
+  mkdir -v build && cd build &&
+  meson setup --prefix=/usr --buildtype=release .. &&
+  ninja && sudo ninja install
+remove: sudo make uninstall

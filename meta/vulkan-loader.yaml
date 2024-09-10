@@ -1,0 +1,25 @@
+name: vulkan-loader
+version: "1.3.295"
+url: "https://github.com/KhronosGroup/Vulkan-Headers/archive/v${version}/Vulkan-Headers-${version}.tar.gz"
+get: |
+  mkdir build &&
+  cd    build &&
+
+  cmake -D CMAKE_INSTALL_PREFIX=/usr -G Ninja .. &&
+  ninja && sudo ninja install &&
+  rm -rf *
+  ASFLAGS=--32 CFLAGS=-m32 CXXFLAGS=-m32 \
+  PKG_CONFIG_PATH=/usr/lib32/pkgconfig   \
+  cmake -D CMAKE_INSTALL_PREFIX=/usr     \
+        -D CMAKE_INSTALL_LIBDIR=lib32    \
+        -D CMAKE_BUILD_TYPE=Release      \
+        -D CMAKE_SKIP_INSTALL_RPATH=ON   \
+        -G Ninja ..
+
+  ninja &&
+  sudo DESTDIR=$PWD/DESTDIR ninja install
+  sudo cp -vr DESTDIR/usr/lib32/* /usr/lib32
+  sudo rm -rf DESTDIR
+  sudo ldconfig
+remove: |
+  cd build && sudo ninja uninstall

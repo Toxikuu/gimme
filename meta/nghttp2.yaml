@@ -1,0 +1,10 @@
+name: nghttp2
+version: 1.63.0
+url: "https://github.com/nghttp2/nghttp2/releases/download/v${version}/nghttp2-${version}.tar.xz"
+get: |
+  ./configure --prefix=/usr   \
+            --disable-static  \
+            --enable-lib-only \
+            --docdir=/usr/share/doc/nghttp2-${version} &&
+  make && sudo make install
+remove: sudo make uninstall

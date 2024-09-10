@@ -1,0 +1,11 @@
+name: vulkan-headers
+version: "1.3.295"
+url: "https://github.com/KhronosGroup/Vulkan-Headers/archive/v${version}/Vulkan-Headers-${version}.tar.gz"
+get: |
+  mkdir build &&
+  cd    build &&
+
+  cmake -D CMAKE_INSTALL_PREFIX=/usr -G Ninja .. &&
+  ninja && sudo ninja install
+remove: |
+  cd build && sudo ninja uninstall

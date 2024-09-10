@@ -1,0 +1,15 @@
+name: cmake
+version: 3.30.3
+url: "https://cmake.org/files/v${version}/cmake-${version}.tar.gz"
+get: |
+  sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake &&
+
+  ./bootstrap --prefix=/usr        \
+              --system-libs        \
+              --mandir=/share/man  \
+              --no-system-jsoncpp  \
+              --no-system-cppdap   \
+              --no-system-librhash \
+              --docdir=/share/doc/cmake-${version} &&
+  make && sudo make install
+remove: sudo make uninstall

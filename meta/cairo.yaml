@@ -1,0 +1,10 @@
+name: "cairo"
+version: "1.18.2"
+url: "https://www.cairographics.org/releases/cairo-${version}.tar.xz"
+get: |
+  mkdir build &&
+  cd    build &&
+
+  meson setup --prefix=/usr --buildtype=release .. &&
+  ninja && sudo ninja install
+remove: sudo rm -v /usr/bin/binary /usr/lib/library.so*

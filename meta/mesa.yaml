@@ -1,0 +1,44 @@
+name: mesa
+version: 24.2.2
+url: "https://mesa.freedesktop.org/archive/mesa-${version}.tar.xz"
+get: |
+  mkdir build &&
+  cd    build &&
+
+  meson setup ..                 \
+        --prefix=$XORG_PREFIX    \
+        --buildtype=release      \
+        -D osmesa=true           \
+        -D platforms=x11         \
+        -D gallium-drivers=auto  \
+        -D vulkan-drivers=auto   \
+        -D valgrind=disabled     \
+        -D libunwind=disabled    &&
+
+  ninja && sudo ninja install
+  rm -rf *
+  CC="gcc -m32" CXX="g++ -m32"                 \
+  PKG_CONFIG_PATH=$XORG_PREFIX/lib32/pkgconfig \
+  meson setup                                  \
+        --prefix=$XORG_PREFIX                  \
+        --libdir=$XORG_PREFIX/lib32            \
+        --buildtype=release                    \
+        -D osmesa=true                         \
+        -D platforms=x11,wayland               \
+        -D gallium-drivers=auto                \
+        -D vulkan-drivers=auto                 \
+        -D valgrind=disabled                   \
+        -D libunwind=disabled                  \
+        -D glvnd=enabled                       \
+        .. &&
+        sed -i 's/\/usr\/lib\//\/usr\/lib32\//g' ./build.ninja &&
+
+  ninja
+
+  DESTDIR=$PWD/DESTDIR sudo ninja install
+  sudo cp -vr DESTDIR/$XORG_PREFIX/lib32/* $XORG_PREFIX/lib32
+  sudo cp -vr DESTDIR/$XORG_PREFIX/share/vulkan/* $XORG_PREFIX/share/vulkan
+  sudo rm -rf DESTDIR
+  sudo ldconfig
+
+remove: cd build && sudo ninja uninstall

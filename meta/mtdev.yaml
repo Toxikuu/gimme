@@ -1,0 +1,7 @@
+name: mtdev
+version: 1.1.7
+url: https://bitmath.org/code/mtdev/mtdev-${version}.tar.bz2
+get: |
+  ./configure --prefix=/usr --disable-static &&
+  make && sudo make install
+remove: sudo rm -v /usr/bin/mtdev-test /usr/lib/libmtdev.so* /usr/lib/libmtdev.la /usr/include/mtdev* /usr/lib/pkgconfig/mtdev.pc

@@ -1,0 +1,8 @@
+name: "template"
+version: "1.0.0"
+url: "https://link.to/template-${version}.tar.bz2"
+get: |
+  ./configure --prefix=/usr &&
+  make &&
+  sudo make install
+remove: sudo rm -v /usr/bin/binary /usr/lib/library.so*

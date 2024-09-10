@@ -1,0 +1,9 @@
+name: sdl2
+version: 2.30.7
+url: "https://www.libsdl.org/release/SDL2-${version}.tar.gz"
+get: |
+  ./configure --prefix=/usr &&
+  make &&
+  sudo make install &&
+  sudo rm -v /usr/lib/libSDL2*.a
+remove: sudo make uninstall

@@ -1,0 +1,10 @@
+name: wayland-protocols
+version: "1.37"
+url: https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/${version}/downloads/wayland-protocols-${version}.tar.xz
+get: |
+  mkdir build &&
+  cd    build &&
+
+  meson setup --prefix=/usr --buildtype=release &&
+  ninja && sudo ninja install
+remove: ninja uninstall

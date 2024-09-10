@@ -1,0 +1,13 @@
+name: libevdev
+version: 1.13.3
+url: "https://www.freedesktop.org/software/libevdev/libevdev-${version}.tar.xz"
+get: |
+  mkdir build &&
+  cd    build &&
+
+  meson setup ..                \
+      --prefix=$XORG_PREFIX     \
+      --buildtype=release       \
+      -D documentation=disabled &&
+  ninja && sudo ninja install
+remove: cd build && sudo ninja uninstall
