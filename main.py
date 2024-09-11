@@ -1,20 +1,19 @@
 #!/bin/python
-#TODO: Migrate from json to yaml for the meta files
-#TODO: Improve error handling (especially for removing files, overwriting stuff in the src dir, etc)
-#TODO: Add a quiet option (can be done by adding a variable "> /dev/null" for commands)
-#TODO: Implement dependency resolution
-#TODO: Add more meta files
-from utils import *
+# TODO: Migrate from json to yaml for the meta files
+# TODO: Improve error handling (especially for removing files, overwriting stuff in the src dir, etc)
+# TODO: Add a quiet option (can be done by adding a variable "> /dev/null" for commands)
+# TODO: Implement dependency resolution
+# TODO: Add more meta files
+from utils import erm, msg
 import subprocess
 import os
-import urllib.parse
-import shutil
 import yaml
 import configparser
 import time
 import argparse
 import string
 from pprint import pprint as pp
+
 
 class Package:
     def __init__(self, name, version, url, get="", remove=""):
@@ -28,6 +27,7 @@ class Package:
     def __repr__(self):
         return f"{self.name}-{self.version}"
 
+
 def interpolate(metafile):
     with open(metafile, 'r') as f:
         data = yaml.safe_load(f)
@@ -40,8 +40,6 @@ def interpolate(metafile):
             version=version,
             minor_version=minor_version
             )
-    # pp(data)
-    # time.sleep(15)
 
     get_template = string.Template(data['get'])
     data['get'] = get_template.safe_substitute(version=data['version'])
@@ -49,6 +47,7 @@ def interpolate(metafile):
     remove_template = string.Template(data['remove'])
     data['remove'] = remove_template.safe_substitute(version=data['version'])
     return data
+
 
 class PackageManager:
     def __init__(self, sources_directory, meta_directory, tracking_file):
@@ -58,11 +57,8 @@ class PackageManager:
 
         with open(tracking_file, 'r') as f:
             lines = f.readlines()
-            lines = [l.strip() for l in lines if l.strip() != '']
+            lines = [line.strip() for line in lines if line.strip() != '']
         self.installed_packages = lines
-        
-        # subprocess.run("echo -e \"$XORG_PREFIX\n$XORG_CONFIG\n$MAKEFLAGS\n\"", shell=True, check=True)
-        # time.sleep(5)
         os.chdir(self.sources_directory)
 
     def make_config_dirs(self):
@@ -74,9 +70,6 @@ class PackageManager:
         if os.path.isfile(package.tarball):
             msg(f"Tarball {package.tarball} already exists")
             return
-        url_path = urllib.parse.urlparse(package.url).path
-        filename = os.path.basename(url_path)
-
         subprocess.run(["wget", package.url, "-O", package.tarball], check=True)
         msg(f"Source fetched and saved as {package.tarball}")
 
@@ -100,7 +93,7 @@ class PackageManager:
                 subprocess.run(package.get, shell=True, check=True)
             os.chdir("..")
         else:
-            erm(f"Tarball not found.")
+            erm(f"Tarball '{package.tarball}' not found.")
 
     def clean_up(self, package, and_dir=False):
         if os.path.exists(f"{package}.tox"):
@@ -202,19 +195,21 @@ class ControlPanel:
         if args.verbose:
             print("Verbose enabled")
 
+
 def read_config(config_file):
     cfg = configparser.ConfigParser()
     cfg.read(config_file)
     return cfg
+
 
 if __name__ == "__main__":
 
     cfg = read_config("gimme.conf")
 
     pm = PackageManager(
-            sources_directory = cfg["Directories"]["sources"],
-            meta_directory = cfg["Directories"]["meta"],
-            tracking_file = cfg["Files"]["tracking"]
+        sources_directory=cfg["Directories"]["sources"],
+        meta_directory=cfg["Directories"]["meta"],
+        tracking_file=cfg["Files"]["tracking"]
             )
 
     pm.make_config_dirs()
