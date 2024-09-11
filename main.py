@@ -1,10 +1,8 @@
 #!/bin/python
-# TODO: Migrate from json to yaml for the meta files
 # TODO: Improve error handling (especially for removing files, overwriting stuff in the src dir, etc)
 # TODO: Add a quiet option (can be done by adding a variable "> /dev/null" for commands)
-# TODO: Implement dependency resolution
 # TODO: Add more meta files
-from utils import erm, msg
+from utils import erm, msg, prompt
 import subprocess
 import os
 import yaml
@@ -64,6 +62,12 @@ class PackageManager:
     def make_config_dirs(self):
         os.makedirs(os.path.join('..', self.sources_directory), exist_ok=True)
         os.makedirs(os.path.join('..', self.meta_directory), exist_ok=True)
+
+    def install_check(self, package):
+        if str(package) in self.installed_packages:
+            msg("Package installed")
+            return prompt(f"Package '{package}' already installed! Reinstall?", default='n')
+        return False
 
     def fetch_source(self, package):
         msg(f"Fetching source for {package}...")
@@ -154,7 +158,7 @@ class PackageManager:
 class ControlPanel:
     def __init__(self, package_manager):
         self.package_manager = package_manager
-        
+
     def load_package_from_yaml(self, pkg):
         data = interpolate(os.path.join('..', self.package_manager.meta_directory, f"{pkg}.yaml"))
         package = Package(
@@ -165,7 +169,6 @@ class ControlPanel:
                 remove=data.get("remove", "")
                 )
         return package
-
 
     def handle_args(self):
         parser = argparse.ArgumentParser(description="Tox's source-based package manager")
@@ -181,12 +184,13 @@ class ControlPanel:
         args = self.handle_args()
         if args.get:
             package = self.load_package_from_yaml(args.get)
-            print(f" [i] Getting {package}...")
-            self.package_manager.get_package(package)
+            if self.package_manager.install_check(package):
+                msg(f"Getting {package}...")
+                self.package_manager.get_package(package)
 
         if args.remove:
             package = self.load_package_from_yaml(args.remove)
-            print(f" [i] Removing {package}...")
+            msg(f"Removing {package}...")
             self.package_manager.remove_package(package)
 
         if args.list:
@@ -210,7 +214,7 @@ if __name__ == "__main__":
         sources_directory=cfg["Directories"]["sources"],
         meta_directory=cfg["Directories"]["meta"],
         tracking_file=cfg["Files"]["tracking"]
-            )
+        )
 
     pm.make_config_dirs()
 
