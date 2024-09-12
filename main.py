@@ -4,8 +4,7 @@
 # TODO: Add more meta files
 # TODO: Untrack older versions of updated packages (might be done with the purge action)
 # TODO: Improve package selection
-from utils import display_list, erm, msg, cmd, prompt, str_to_bool, title
-import subprocess
+from utils import display_list, erm, msg, cmd, prompt, str_to_bool, title, debug
 import os
 import yaml
 import configparser
@@ -22,7 +21,7 @@ class Package:
         self.url = url
         self.get = get
         self.remove = remove
-        self.tarball = f"{self.name}-{self.version}.tox"
+        self.tarball = f"{self.name}-{self.version}.tar"
 
     def __repr__(self):
         return f"{self.name}-{self.version}"
@@ -117,7 +116,7 @@ class PackageManager:
         if tarball:
             cmd(f"rm -vf {package.tarball}")
         if build_dir:
-            cmd(f"rm -rvf {package}")
+            cmd(f"pwd && sudo rm -rvf {package}")
 
     def uninstall(self, package):
         msg(f"Uninstalling {package}...")
@@ -231,6 +230,7 @@ def read_config(config_file):
 
 
 if __name__ == "__main__":
+    d = debug()
 
     cfg = read_config("gimme.conf")
 
