@@ -4,4 +4,5 @@ url: "https://github.com/gavinhoward/bc/releases/download/${version}/bc-${versio
 get: |
   CC=gcc ./configure --prefix=/usr -G -O3 -r &&
   make && sudo make install
-remove: echo not implemented
+remove: |
+  sudo rm -v /bin/{b,d}c
