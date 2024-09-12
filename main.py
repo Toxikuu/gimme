@@ -4,7 +4,7 @@
 # TODO: Add more meta files
 # TODO: Untrack older versions of updated packages (might be done with the purge action)
 # TODO: Improve package selection
-from utils import erm, msg, cmd, prompt, str_to_bool
+from utils import display_list, erm, msg, cmd, prompt, str_to_bool, title
 import subprocess
 import os
 import yaml
@@ -159,9 +159,8 @@ class PackageManager:
         if not self.installed_packages:
             erm("No packages installed.")
         else:
-            print("Installed packages:")
-            for p in self.installed_packages:
-                print(f" - {p}")
+            title("Installed packages:")
+            display_list(self.installed_packages)
 
     def get_package(self, package):
         self.track_package(package, "purge")
