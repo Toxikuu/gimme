@@ -1,4 +1,22 @@
 import subprocess
+from pprint import pprint
+
+
+class debug:
+    def __init__(self, s=True):
+        self.s = s
+
+    def step(self):
+        if self.s:
+            input("Step...")
+
+    def pp(self, _dict):
+        pprint(_dict)
+        self.step()
+
+    def pr(self, string):
+        print(f" </> \x1b[1;3m{string}\x1b[0m")
+        self.step()
 
 
 def msg(message):
