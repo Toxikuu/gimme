@@ -1,5 +1,7 @@
 name: "tzdata"
 version: "2024b"
+# no url because tzdata is special
+# i may change this in the future by implementing a check for files in the extract_tarball() function
 get: |
   wget "https://www.iana.org/time-zones/repository/releases/tzdata${version}.tar.gz"
   tar xvf tzdata${version}.tar.gz
