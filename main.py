@@ -195,32 +195,54 @@ class ControlPanel:
     def handle_args(self):
         parser = argparse.ArgumentParser(description="Tox's source-based package manager")
 
-        parser.add_argument("-g", "--get", type=str, help="get <package>")
-        parser.add_argument("-r", "--remove", type=str, help="remove <package>")
-        parser.add_argument("-l", "--list", action="store_true", help="list installed packages")
-        parser.add_argument("-v", "--verbose", action="store_true", help="increase output verbosity")
-        parser.add_argument("-q", "--quiet", action="store_true", help="decreases output verbosity")
+        parser.add_argument(
+            "-g",
+            "--get",
+            nargs="+",
+            type=str,
+            help="get PACKAGE1 PACKAGE2")
+        parser.add_argument(
+            "-r",
+            "--remove",
+            nargs="+",
+            type=str,
+            help="remove PACKAGE1 PACKAGE2")
+        parser.add_argument(
+            "-l",
+            "--list",
+            action="store_true",
+            help="list installed packages")
+        # parser.add_argument(
+        #     "-v",
+        #     "--verbose",
+        #     action="store_true",
+        #     default="true",
+        #     help="increase output verbosity")
+        parser.add_argument(
+            "-q",
+            "--quiet",
+            action="store_true",
+            help="decreases output verbosity")
 
         return parser.parse_args()
 
     def run(self):
         args = self.handle_args()
         if args.get:
-            package = self.load_package_from_yaml(args.get)
-            if self.package_manager.install_check(package):
-                msg(f"Getting {package}...")
-                self.package_manager.get_package(package)
+            for arg in args.get:
+                package = self.load_package_from_yaml(arg)
+                if self.package_manager.install_check(package):
+                    msg(f"Getting {package}...")
+                    self.package_manager.get_package(package)
 
         if args.remove:
-            package = self.load_package_from_yaml(args.remove)
-            msg(f"Removing {package}...")
-            self.package_manager.remove_package(package)
+            for arg in args.remove:
+                package = self.load_package_from_yaml(arg)
+                msg(f"Removing {package}...")
+                self.package_manager.remove_package(package)
 
         if args.list:
             self.package_manager.list_installed()
-
-        if args.verbose:
-            print("Verbose enabled")
 
 
 def read_config(config_file):
