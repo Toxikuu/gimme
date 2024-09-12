@@ -101,4 +101,4 @@ get: |
   chmod +x udev_install.sh
   sudo ./udev_install.sh
 
-remove: sudo rm -v /usr/bin/binary /usr/lib/library.so*
+remove: echo not implemented
