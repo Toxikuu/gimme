@@ -15,7 +15,7 @@ from pprint import pprint as pp
 
 
 class Package:
-    def __init__(self, name, version, url, get="", remove=""):
+    def __init__(self, name, version, url="", get="", remove=""):
         self.name = name
         self.version = version
         self.url = url
@@ -34,17 +34,26 @@ def interpolate(metafile):
     version = data['version']
     minor_version = '.'.join(version.split('.')[:2])
 
-    url_template = string.Template(data['url'])
-    data['url'] = url_template.safe_substitute(
-            version=version,
-            minor_version=minor_version
-            )
+    try:
+        url_template = string.Template(data['url'])
+        data['url'] = url_template.safe_substitute(
+                version=version,
+                minor_version=minor_version
+                )
+    except KeyError:
+        pass
 
-    get_template = string.Template(data['get'])
-    data['get'] = get_template.safe_substitute(version=data['version'])
+    try:
+        get_template = string.Template(data['get'])
+        data['get'] = get_template.safe_substitute(version=data['version'])
+    except KeyError:
+        pass
 
-    remove_template = string.Template(data['remove'])
-    data['remove'] = remove_template.safe_substitute(version=data['version'])
+    try:
+        remove_template = string.Template(data['remove'])
+        data['remove'] = remove_template.safe_substitute(version=data['version'])
+    except KeyError:
+        pass
     return data
 
 
@@ -74,39 +83,46 @@ class PackageManager:
         return True
 
     def fetch_source(self, package):
-        msg(f"Fetching source for {package}...")
-        if os.path.isfile(package.tarball):
-            msg(f"Tarball {package.tarball} already exists")
-            return
-        if not cmd(f"wget '{package.url}' -O {package.tarball}"):
-            erm(f"Failed to wget tarball '{package.tarball}' from url '{package.url}'")
-            exit()
-        msg(f"Source fetched and saved as {package.tarball}")
+        if package.url:
+            msg(f"Fetching source for {package}...")
+            if os.path.isfile(package.tarball):
+                msg(f"Tarball {package.tarball} already exists")
+                return
+            if not cmd(f"wget '{package.url}' -O {package.tarball}"):
+                erm(f"Failed to wget tarball '{package.tarball}' from url '{package.url}'")
+                exit()
+            msg(f"Source fetched and saved as {package.tarball}")
+        else:
+            msg(f"No source url for package '{package}'")
 
     def extract_tarball(self, package):
-        msg(f"Extracting tarball '{package.tarball}'")
+        if os.path.isfile(package.tarball):
+            msg(f"Extracting tarball '{package.tarball}'")
 
-        temp_dir = "temp_extract"
-        if os.path.isdir(temp_dir):
+            temp_dir = "temp_extract"
+            if os.path.isdir(temp_dir):
+                cmd(f"sudo rm -rvf {temp_dir}")
+            cmd("mkdir -pv temp_extract")
+
+            if os.path.isdir(repr(package)):
+                cmd(f"sudo rm -rvf {package}")
+
+            if not cmd(f"tar xvf {package.tarball} -C {temp_dir}"):
+                erm(f"Failed to extract tarball '{package.tarball}'")
+                msg(f"Removing possibly corrupted tarball '{package.tarball}'")
+                cmd(f"rm -v {package.tarball}")
+                msg("Try again")
+                exit()
+
+            cmd(f"mv -v {temp_dir}/* {package}")
             cmd(f"rm -rv {temp_dir}")
-        cmd("mkdir -v temp_extract")
-
-        if os.path.isdir(repr(package)):
-            cmd(f"rm -rvf {package}")
-
-        if not cmd(f"tar xvf {package.tarball} -C {temp_dir}"):
-            erm(f"Failed to extract tarball '{package.tarball}'")
-            msg(f"Removing possibly corrupted tarball '{package.tarball}'")
-            cmd(f"rm -v {package.tarball}")
-            msg("Try again")
-            exit()
-
-        cmd(f"mv -v {temp_dir}/* {package}")
-        cmd(f"rm -rv {temp_dir}")
+        else:
+            msg(f"Tarball '{package.tarball}' does not exist")
 
     def build(self, package):
         msg(f"Building {package}...")
-        if cmd(f"cd {package} && {package.get}"):
+        # mkdir -p is necessary for certain packages (tzdata for instance)
+        if cmd(f"mkdir -pv {package} && cd {package} && {package.get}"):
             msg(f"Successfully installed {package}")
         else:
             erm(f"Failed to install {package}")
@@ -186,7 +202,7 @@ class ControlPanel:
         package = Package(
                 name=data.get("name"),
                 version=data.get("version"),
-                url=data.get("url"),
+                url=data.get("url", ""),
                 get=data.get("get", ""),
                 remove=data.get("remove", "")
                 )
