@@ -40,16 +40,19 @@ class PackageManager:
         self.installed_packages = lines
         os.chdir(self.sources_directory)
 
-    def install_check(self, package):
-        if not Q:
-            msg(f"Checking if package '{package}' is installed...")
+    def is_installed(self, package):
         if str(package) in self.installed_packages:
-            if not self.reinstall_yes:
-                return not prompt(f"Package '{package}' already installed! Reinstall?", default='n')
-            else:
-                if not Q:
-                    msg("Reinstallation automation is enabled")
-        return True
+            return True
+    # def install_check(self, package):
+    #     if not Q:
+    #         msg(f"Checking if package '{package}' is installed...")
+    #     if str(package) in self.installed_packages:
+    #         if not self.reinstall_yes:
+    #             return not prompt(f"Package '{package}' already installed! Reinstall?", default='n')
+    #         else:
+    #             if not Q:
+    #                 msg("Reinstallation automation is enabled")
+    #     return True
 
     def type__check(self, package):
         if not Q:
@@ -320,26 +323,23 @@ class ControlPanel:
                 msg("Resolving dependencies...")
                 for dep in package.deps:
                     pkg = self.load_package(dep)
-                    if self.package_manager.install_check(pkg):
+                    if not self.package_manager.is_installed(pkg):
                         self.resolve_deps(pkg)
                         self.package_manager.get_package(pkg)
-                    else:
-                        return False
             elif prompt(f"Package '{package}' has {len(package.deps)} dependencies. Continue?", default='y'):
                 msg("Resolving dependencies...")
                 for dep in package.deps:
                     pkg = self.load_package(dep)
-                    if self.package_manager.install_check(pkg):
+                    if not self.package_manager.is_installed(pkg):
                         self.resolve_deps(pkg)
                         self.package_manager.get_package(pkg)
-                    else:
-                        return False
             else:
                 msg(f"Cancelling installation of {package}")
                 return False
         else:
             if not Q:
                 msg(f"Package '{package}' has no dependencies")
+                return False
         return True
 
     def run(self):
@@ -354,7 +354,7 @@ class ControlPanel:
                 package = self.load_package(arg)
                 if not self.resolve_deps(package):
                     exit()
-                if self.package_manager.install_check(package):
+                if not self.package_manager.is_installed(package):
                     self.package_manager.get_package(package)
 
         if args.remove:
