@@ -45,7 +45,7 @@ class PackageManager:
             msg(f"Checking if package '{package}' is installed...")
         if str(package) in self.installed_packages:
             if not self.reinstall_yes:
-                return prompt(f"Package '{package}' already installed! Reinstall?", default='n')
+                return not prompt(f"Package '{package}' already installed! Reinstall?", default='n')
             else:
                 if not Q:
                     msg("Reinstallation automation is enabled")
@@ -320,10 +320,11 @@ class ControlPanel:
                 msg("Resolving dependencies...")
                 for dep in package.deps:
                     pkg = self.load_package(dep)
-                    if not self.package_manager.install_check(package):
+                    if self.package_manager.install_check(package):
+                        self.resolve_deps(pkg)
+                        self.package_manager.get_package(pkg)
+                    else:
                         return False
-                    self.resolve_deps(pkg)
-                    self.package_manager.get_package(pkg)
             elif prompt(f"Package '{package}' has {len(package.deps)} dependencies. Continue?", default='y'):
                 msg("Resolving dependencies...")
                 for dep in package.deps:
