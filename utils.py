@@ -36,12 +36,19 @@ def display_list(_list):
         print(f"\x1b[3m - {item}\x1b[0m")
 
 
-def cmd(command):
+def cmd(command, co=False, v=False):
     try:
-        subprocess.run(command, shell=True, check=True)
+        result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
+        if v:
+            print(result.stdout.strip())
+        if co:
+            return result.stdout.strip()
         return True
-    except subprocess.CalledProcessError:
-        erm(f"Command '{command}' failed!")
+    except subprocess.CalledProcessError as e:
+        erm(f"Command '{command}' failed with error: {e.stderr}")
+        return False
+    except Exception as e:
+        erm(f"An unexpected error occurred: {e}")
         return False
 
 
