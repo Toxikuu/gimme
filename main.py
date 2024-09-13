@@ -330,7 +330,8 @@ class ControlPanel:
                 pkg = self.load_package(dep)
                 self.dep_list(pkg, visited)
 
-        return list(visited)
+        deps = list(visited)
+        return list(dict.fromkeys(deps))
 
     def resolve_deps(self, dependencies_list):
         title("Deep dependency list:")
