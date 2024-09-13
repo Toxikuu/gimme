@@ -7,7 +7,7 @@ LINK="https://archive.mozilla.org/pub/security/nss/releases/NSS_3_104_RTM/src/ns
 get() {
   wget https://www.linuxfromscratch.org/patches/blfs/svn/nss-$VERS-standalone-1.patch &&
   patch -Np1 -i ./nss-$VERS-standalone-1.patch &&
-  cp -v nss{,32}
+  cp -rv nss{,32}
   cd nss &&
 
   make BUILD_OPT=1                    \
