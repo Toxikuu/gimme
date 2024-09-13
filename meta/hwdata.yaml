@@ -1,7 +1,0 @@
-name: "hwdata"
-version: "0.386"
-url: "https://github.com/vcrhonek/hwdata/archive/v${version}/hwdata-${version}.tar.gz"
-get: |
-  ./configure --prefix=/usr --disable-blacklist &&
-  sudo make install
-remove: sudo make uninstall

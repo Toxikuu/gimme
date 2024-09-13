@@ -1,7 +1,0 @@
-name: tree
-version: 2.1.3
-url: "https://gitlab.com/OldManProgrammer/unix-tree/-/archive/${version}/unix-tree-${version}.tar.bz2"
-get: |
-  make &&
-  sudo make PREFIX=/usr MANDIR=/usr/share/man install
-remove: sudo rm -v /usr/bin/tree /usr/share/man/man1/tree.1

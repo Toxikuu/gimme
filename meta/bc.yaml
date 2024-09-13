@@ -1,8 +1,0 @@
-name: "bc"
-version: "7.0.1"
-url: "https://github.com/gavinhoward/bc/releases/download/${version}/bc-${version}.tar.xz"
-get: |
-  CC=gcc ./configure --prefix=/usr -G -O3 -r &&
-  make && sudo make install
-remove: |
-  sudo rm -v /bin/{b,d}c
