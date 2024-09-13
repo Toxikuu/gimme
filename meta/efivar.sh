@@ -6,7 +6,7 @@ LINK="https://github.com/rhboot/efivar/archive/$VERS/efivar-$VERS.tar.gz"
 
 get() {
   make &&
-  sudo make install LIBDIR=/usr/lib
+  make install LIBDIR=/usr/lib
 }
 
 remove() {

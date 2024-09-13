@@ -6,7 +6,7 @@ LINK="https://github.com/rhboot/efibootmgr/archive/$VERS/efibootmgr-$VERS.tar.gz
 
 get() {
   make EFIDIR=LFS EFI_LOADER=tox64.efi
-  sudo make install EFIDIR=LFS
+  make install EFIDIR=LFS
 }
 
 remove() {
