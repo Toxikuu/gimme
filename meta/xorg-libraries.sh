@@ -5,7 +5,7 @@ DEPS="fontconfig libxcb wget"
 LINK=""
 
 get() {
-  cat > lib-7-list << "EOF"
+  cat > lib-7-list <<EOF
     xtrans-1.5.0.tar.xz
     libX11-1.8.10.tar.xz
     libXext-1.3.6.tar.xz
