@@ -1,12 +1,13 @@
-NAME="tree"
-VERS="version: 2.1.3"
-TYPE=""
+NAME="gzip"
+VERS="1.13"
+TYPE="core"
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://ftp.gnu.org/gnu/gzip/gzip-$VERS.tar.xz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  ./configure --prefix=/usr
+  make
+  make install
 }
 
 remove() {

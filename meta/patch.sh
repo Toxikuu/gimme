@@ -1,12 +1,13 @@
-NAME="tree"
-VERS="version: 2.1.3"
-TYPE=""
+NAME="patch"
+VERS="2.7.6"
+TYPE="core"
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://ftp.gnu.org/gnu/patch/patch-$VERS.tar.xz"
 
 get() {
+  ./configure --prefix=/usr &&
   make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  make install
 }
 
 remove() {

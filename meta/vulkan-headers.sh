@@ -1,12 +1,15 @@
-NAME="tree"
-VERS="version: 2.1.3"
+NAME="vulkan-headers"
+VERS="1.3.295"
 TYPE=""
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://github.com/KhronosGroup/Vulkan-Headers/archive/v$VERS/Vulkan-Headers-$VERS.tar.gz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  mkdir build &&
+  cd    build &&
+
+  cmake -D CMAKE_INSTALL_PREFIX=/usr -G Ninja .. &&
+  ninja && ninja install
 }
 
 remove() {

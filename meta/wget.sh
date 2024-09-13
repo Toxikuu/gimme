@@ -1,12 +1,14 @@
-NAME="tree"
-VERS="version: 2.1.3"
+NAME="wget"
+VERS="1.24.5"
 TYPE=""
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://ftp.gnu.org/gnu/wget/wget-$VERS.tar.gz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  ./configure --prefix=/usr      \
+              --sysconfdir=/etc  \
+              --with-ssl=openssl &&
+  make && make install
 }
 
 remove() {

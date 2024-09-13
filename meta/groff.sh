@@ -1,12 +1,13 @@
-NAME="tree"
-VERS="version: 2.1.3"
-TYPE=""
+NAME="groff"
+VERS="1.23.0"
+TYPE="core"
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://ftp.gnu.org/gnu/groff/groff-$VERS.tar.gz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  PAGE=letter ./configure --prefix=/usr
+  make
+  make install
 }
 
 remove() {

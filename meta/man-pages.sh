@@ -1,12 +1,12 @@
-NAME="tree"
-VERS="version: 2.1.3"
+NAME="man-pages"
+VERS="6.9.1"
 TYPE=""
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://www.kernel.org/pub/linux/docs/man-pages/man-pages-$VERS.tar.xz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  rm -v man3/crypt*
+  make prefix=/usr install
 }
 
 remove() {

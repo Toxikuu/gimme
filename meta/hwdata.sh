@@ -1,12 +1,12 @@
-NAME="tree"
-VERS="version: 2.1.3"
+NAME="hwdata"
+VERS="0.386"
 TYPE=""
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://github.com/vcrhonek/hwdata/archive/v$VERS/hwdata-$VERS.tar.gz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  ./configure --prefix=/usr --disable-blacklist &&
+  make install
 }
 
 remove() {

@@ -1,16 +1,16 @@
-NAME="tree"
-VERS="version: 2.1.3"
-TYPE=""
+NAME="bc"
+VERS="7.0.1"
+TYPE="extra"
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://github.com/gavinhoward/bc/releases/download/$VERS/bc-$VERS.tar.xz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  CC=gcc ./configure --prefix=/usr -G -O3 -r &&
+  make && make install
 }
 
 remove() {
-  echo not implemented
+  rm -v /bin/{b,d}c
 }
 
 

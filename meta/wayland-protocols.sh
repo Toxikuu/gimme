@@ -1,12 +1,15 @@
-NAME="tree"
-VERS="version: 2.1.3"
+NAME="wayland-protocols"
+VERS="1.37"
 TYPE=""
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="url: https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/$VERS/downloads/wayland-protocols-$VERS.tar.xz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  mkdir build &&
+  cd    build &&
+
+  meson setup --prefix=/usr --buildtype=release &&
+  ninja && ninja install
 }
 
 remove() {

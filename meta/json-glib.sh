@@ -1,12 +1,13 @@
-NAME="tree"
-VERS="version: 2.1.3"
+NAME="json-glib"
+VERS="1.10.0"
 TYPE=""
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://download.gnome.org/sources/json-glib/$(echo \"$VERS\" | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1/')/json-glib-$VERS.tar.xz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  mkdir -v build && cd build &&
+  meson setup --prefix=/usr --buildtype=release .. &&
+  ninja && ninja install
 }
 
 remove() {

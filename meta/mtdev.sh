@@ -1,12 +1,12 @@
-NAME="tree"
-VERS="version: 2.1.3"
+NAME="mtdev"
+VERS="version: 1.1.7"
 TYPE=""
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="url: https://bitmath.org/code/mtdev/mtdev-$VERS.tar.bz2"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  ./configure --prefix=/usr --disable-static &&
+  make && make install
 }
 
 remove() {

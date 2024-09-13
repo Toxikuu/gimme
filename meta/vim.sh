@@ -1,12 +1,15 @@
-NAME="tree"
-VERS="version: 2.1.3"
-TYPE=""
+NAME="vim"
+VERS="9.1.0660"
+TYPE="core"
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://github.com/vim/vim/archive/v$VERS/vim-$VERS.tar.gz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
+  ./configure --prefix=/usr
+  make
+  make install
+  ln -sv ../vim/vim91/doc /usr/share/doc/vim-9.1.0660
 }
 
 remove() {

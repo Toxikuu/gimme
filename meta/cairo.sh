@@ -1,12 +1,15 @@
-NAME="tree"
-VERS="version: 2.1.3"
-TYPE=""
+NAME="cairo"
+VERS="1.18.2"
+TYPE="extra"
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://www.cairographics.org/releases/cairo-$VERS.tar.xz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  mkdir build &&
+  cd    build &&
+
+  meson setup --prefix=/usr --buildtype=release .. &&
+  ninja && ninja install
 }
 
 remove() {

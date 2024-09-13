@@ -1,12 +1,10 @@
-NAME="tree"
-VERS="version: 2.1.3"
-TYPE=""
+NAME=""
+VERS=""
+TYPE="extra"
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK=""
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
 }
 
 remove() {

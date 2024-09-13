@@ -1,12 +1,11 @@
-NAME="tree"
-VERS="version: 2.1.3"
-TYPE=""
+NAME="iana-etc"
+VERS="20240829"
+TYPE="core"
 DEPS=""
-LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"
+LINK="https://github.com/Mic92/iana-etc/releases/download/$VERS/iana-etc-$VERS.tar.gz"
 
 get() {
-  make &&
-  make PREFIX=/usr MANDIR=/usr/share/man install
+  cp services protocols /etc
 }
 
 remove() {
