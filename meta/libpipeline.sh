@@ -2,7 +2,7 @@ NAME="libpipeline"
 VERS="1.5.8"
 TYPE="core"
 DEPS=""
-LINK="https://download.savannah.gnu.org/releases/libpipeline/libpipeline-.tar.gz"
+LINK="https://download.savannah.gnu.org/releases/libpipeline/libpipeline-$VERS.tar.gz"
 
 get() {
   ./configure --prefix=/usr &&

@@ -2,7 +2,7 @@ NAME="opus"
 VERS="1.5.2"
 TYPE="extra"
 DEPS=""
-LINK="https://downloads.xiph.org/releases/opus/opus-.tar.gz"
+LINK="https://downloads.xiph.org/releases/opus/opus-$VERS.tar.gz"
 
 get() {
   mkdir build &&

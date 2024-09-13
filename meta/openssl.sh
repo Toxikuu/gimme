@@ -2,7 +2,7 @@ NAME="openssl"
 VERS="3.3.2"
 TYPE="extra"
 DEPS=""
-LINK="https://github.com/openssl/openssl/releases/download/openssl-/openssl-.tar.gz"
+LINK="https://github.com/openssl/openssl/releases/download/openssl-$VERS/openssl-$VERS.tar.gz"
 
 get() {
   ./config --prefix=/usr         \
@@ -13,8 +13,8 @@ get() {
   make &&
   sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
   make MANSUFFIX=ssl install
-  mv -v /usr/share/doc/openssl /usr/share/doc/openssl-
-  cp -vfr doc/* /usr/share/doc/openssl-
+  mv -v /usr/share/doc/openssl /usr/share/doc/openssl-$VERS
+  cp -vfr doc/* /usr/share/doc/openssl-$VERS
 
   make distclean
   ./config --prefix=/usr         \
