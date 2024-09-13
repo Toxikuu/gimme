@@ -312,35 +312,33 @@ class ControlPanel:
 
         return parser.parse_args()
 
-    def resolve_deps(self, package):
-        # Resolves all dependencies for a package
-        if len(package.deps) > 0:
+    def dep_list(self, package, visited=None):
+        # return a deep list of all dependencies for a package
+
+        if visited is None:
+            visited = set()
+
+        if package in visited:
+            return
+
+        visited.add(package)
+        if package.deps:
             title(f"Dependencies for {package}:")
             display_list(package.deps)
-            if self.package_manager.dependencies_yes:
-                if not Q:
-                    msg("Dependency automation is enabled")
-                msg("Resolving dependencies...")
-                for dep in package.deps:
-                    pkg = self.load_package(dep)
-                    if not self.package_manager.is_installed(pkg):
-                        self.resolve_deps(pkg)
-                        self.package_manager.get_package(pkg)
-            elif prompt(f"Package '{package}' has {len(package.deps)} dependencies. Continue?", default='y'):
-                msg("Resolving dependencies...")
-                for dep in package.deps:
-                    pkg = self.load_package(dep)
-                    if not self.package_manager.is_installed(pkg):
-                        self.resolve_deps(pkg)
-                        self.package_manager.get_package(pkg)
-            else:
-                msg(f"Cancelling installation of {package}")
-                return False
-        else:
-            if not Q:
-                msg(f"Package '{package}' has no dependencies")
-                return False
-        return True
+
+            for dep in package.deps:
+                pkg = self.load_package(dep)
+                self.dep_list(pkg, visited)
+
+        return list(visited)
+
+    def resolve_deps(self, dependencies_list):
+        title("Deep dependency list:")
+        display_list(dependencies_list)
+
+        for pkg in dependencies_list:
+            if not self.package_manager.is_installed(pkg):
+                self.package_manager.get_package(pkg)
 
     def run(self):
         args = self.handle_args()
@@ -352,10 +350,8 @@ class ControlPanel:
         if args.get:
             for arg in args.get:
                 package = self.load_package(arg)
-                if not self.resolve_deps(package):
-                    exit()
-                if not self.package_manager.is_installed(package):
-                    self.package_manager.get_package(package)
+                dependencies_list = self.dep_list(package)
+                self.resolve_deps(dependencies_list)
 
         if args.remove:
             for arg in args.remove:
