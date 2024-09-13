@@ -1,10 +1,8 @@
 #!/bin/python
-# TODO: Implement dependency resolution
 # TODO: Improve error handling
-# TODO: Add a quiet option (can be done by adding a variable "> /dev/null" for commands)
 # TODO: Add more meta files
 # TODO: Untrack older versions of updated packages (might be done with the purge action; more testing needed)
-# TODO: Improve package selection
+# TODO: Use regex for purging
 from utils import display_list, erm, msg, cmd, prompt, str_to_bool, title, debug
 import os
 import configparser
