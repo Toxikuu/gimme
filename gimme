@@ -6,6 +6,10 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 . ./gimme.env
+mkdir -pv src
+if [ ! -e tracking ]; then
+  touch tracking
+fi
 
 # cat << EOF
 # ENVIRONMENT VARIABLES:

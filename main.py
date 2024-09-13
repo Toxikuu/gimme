@@ -42,10 +42,6 @@ class PackageManager:
         self.installed_packages = lines
         os.chdir(self.sources_directory)
 
-    def make_config_dirs(self):
-        os.makedirs(os.path.join('..', self.sources_directory), exist_ok=True)
-        os.makedirs(os.path.join('..', self.meta_directory), exist_ok=True)
-
     def install_check(self, package):
         if not Q:
             msg(f"Checking if package '{package}' is installed...")
@@ -386,8 +382,6 @@ if __name__ == "__main__":
     pm = PackageManager(
         cfg=cfg
         )
-
-    pm.make_config_dirs()
 
     control = ControlPanel(pm)
     control.run()
