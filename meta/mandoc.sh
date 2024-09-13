@@ -2,7 +2,7 @@ NAME="mandoc"
 VERS="1.14.6"
 TYPE="extra"
 DEPS=""
-LINK="http://ftp.rpm.org/popt/releases/popt-1.x/popt-$VERS.tar.gz"
+LINK="https://mandoc.bsd.lv/snapshots/mandoc-$VERS.tar.gz"
 
 get() {
   ./configure &&
