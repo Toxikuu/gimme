@@ -13,7 +13,7 @@ get() {
 
   # Update trust stores
   /usr/sbin/make-ca -r
-  EOF
+EOF
 
   mkdir p11-build &&
   cd    p11-build &&

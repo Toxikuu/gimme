@@ -38,7 +38,7 @@ get() {
     libxkbfile-1.1.3.tar.xz
     libxshmfence-1.3.2.tar.xz
     libXpresent-1.0.1.tar.xz
-  EOF
+EOF
 
   mkdir lib &&
   cd lib &&

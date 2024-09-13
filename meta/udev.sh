@@ -100,7 +100,7 @@ get() {
     sed -e "s;/usr/lib;&32;g" src/libudev/libudev.pc > /usr/lib32/pkgconfig/libudev.pc
 
     udev-hwdb update
-  EOF
+EOF
   chmod +x udev_install.sh
   ./udev_install.sh
 }
