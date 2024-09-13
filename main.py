@@ -323,8 +323,8 @@ class ControlPanel:
 
         visited.add(package)
         if package.deps:
-            title(f"Dependencies for {package}:")
-            display_list(package.deps)
+            # title(f"Dependencies for {package}:")
+            # display_list(package.deps)
 
             for dep in package.deps:
                 pkg = self.load_package(dep)
