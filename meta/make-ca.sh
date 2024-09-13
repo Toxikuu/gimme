@@ -7,7 +7,7 @@ LINK="https://github.com/lfs-book/make-ca/archive/v$VERS/make-ca-$VERS.tar.gz"
 get() {
   cat >> make-ca << "EOF"
   ln -svf /etc/pki/tls/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
-  EOF
+EOF
 
   make install &&
   install -vdm755 /etc/ssl/local

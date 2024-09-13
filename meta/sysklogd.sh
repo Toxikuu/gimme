@@ -26,7 +26,7 @@ get() {
   secure_mode 2
 
   # End /etc/syslog.conf
-  EOF
+EOF
 }
 
 remove() {

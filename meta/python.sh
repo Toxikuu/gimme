@@ -12,11 +12,11 @@ get() {
 
   make && make install
   
-  bash -c 'cat > /etc/pip.conf << EOF
+  cat > /etc/pip.conf << EOF
   [global]
   root-user-action = ignore
   disable-pip-version-check = true
-  EOF'
+EOF
 }
 
 remove() {

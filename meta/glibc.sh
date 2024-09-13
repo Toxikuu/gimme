@@ -109,7 +109,7 @@ get() {
       rpc: files
 
       # End /etc/nsswitch.conf
-    EOF
+EOF
 
     cat > /etc/ld.so.conf << "EOF"
       # Begin /etc/ld.so.conf
@@ -121,11 +121,11 @@ get() {
 
       # Multilib
       /usr/lib32
-    EOF
+EOF
 
     mkdir -pv /etc/ld.so.conf.d
 
-  ~fin.
+~fin.
   chmod +x ./glibc_install.sh
   ./glibc_install.sh
 }

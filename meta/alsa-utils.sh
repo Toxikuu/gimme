@@ -22,7 +22,7 @@ get() {
     defaults.ctl.card 1
 
     # End /etc/asound.conf
-  EOF
+EOF
 }
 
 remove() {
