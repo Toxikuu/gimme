@@ -2,7 +2,7 @@ NAME="dhcpcd"
 VERS="10.0.10"
 TYPE="extra"
 DEPS=""
-LINK="https://github.com/NetworkConfiguration/dhcpcd/releases/download/v/dhcpcd-$VERS.tar.xz"
+LINK="https://github.com/NetworkConfiguration/dhcpcd/releases/download/v$VERS/dhcpcd-$VERS.tar.xz"
 
 get() {
   ./configure --prefix=/usr              \
