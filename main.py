@@ -320,7 +320,7 @@ class ControlPanel:
                 msg("Resolving dependencies...")
                 for dep in package.deps:
                     pkg = self.load_package(dep)
-                    if self.package_manager.install_check(package):
+                    if self.package_manager.install_check(pkg):
                         self.resolve_deps(pkg)
                         self.package_manager.get_package(pkg)
                     else:
@@ -329,7 +329,7 @@ class ControlPanel:
                 msg("Resolving dependencies...")
                 for dep in package.deps:
                     pkg = self.load_package(dep)
-                    if self.package_manager.install_check(package):
+                    if self.package_manager.install_check(pkg):
                         self.resolve_deps(pkg)
                         self.package_manager.get_package(pkg)
                     else:
