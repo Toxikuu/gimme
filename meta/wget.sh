@@ -1,7 +1,7 @@
 NAME="wget"
 VERS="1.24.5"
 TYPE=""
-DEPS=""
+DEPS="libpsl make-ca"
 LINK="https://ftp.gnu.org/gnu/wget/wget-$VERS.tar.gz"
 
 get() {

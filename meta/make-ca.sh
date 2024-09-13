@@ -1,7 +1,7 @@
 NAME="make-ca"
 VERS="1.14"
 TYPE=""
-DEPS=""
+DEPS="p11-kit libtasn1 nss"
 LINK="https://github.com/lfs-book/make-ca/archive/v$VERS/make-ca-$VERS.tar.gz"
 
 get() {

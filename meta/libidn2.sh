@@ -1,7 +1,7 @@
 NAME="libidn2"
 VERS="2.3.7"
 TYPE="extra"
-DEPS=""
+DEPS="libunistring"
 LINK="https://ftp.gnu.org/gnu/libidn/libidn2-$VERS.tar.gz"
 
 get() {

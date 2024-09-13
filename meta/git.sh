@@ -1,7 +1,7 @@
 NAME="git"
 VERS="2.46.0"
 TYPE="extra"
-DEPS=""
+DEPS="curl"
 LINK="https://www.kernel.org/pub/software/scm/git/git-$VERS.tar.xz"
 
 get() {

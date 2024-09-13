@@ -1,7 +1,7 @@
 NAME="libpsl"
 VERS="0.21.5"
 TYPE="extra"
-DEPS=""
+DEPS="libidn2 libunistring"
 LINK="https://github.com/rockdaboot/libpsl/releases/download/$VERS/libpsl-$VERS.tar.gz"
 
 get() {

@@ -1,7 +1,7 @@
 NAME="libsndfile"
 VERS="1.2.2"
 TYPE="extra"
-DEPS=""
+DEPS="flac opus libvorbis"
 LINK="https://github.com/libsndfile/libsndfile/releases/download/$VERS/libsndfile-$VERS.tar.xz"
 
 get() {

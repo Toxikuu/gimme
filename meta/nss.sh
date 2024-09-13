@@ -1,7 +1,7 @@
 NAME="nss"
 VERS="3.104"
 TYPE=""
-DEPS=""
+DEPS="nspr"
 LINK="https://archive.mozilla.org/pub/security/nss/releases/NSS_3_104_RTM/src/nss-$VERS.tar.gz"
 
 get() {

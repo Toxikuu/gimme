@@ -1,7 +1,7 @@
 NAME="pulseaudio"
 VERS="17.0"
 TYPE="extra"
-DEPS=""
+DEPS="libsndfile alsa-lib"
 LINK="https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-$VERS.tar.xz"
 
 get() {

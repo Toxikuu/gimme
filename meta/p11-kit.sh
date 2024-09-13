@@ -1,7 +1,7 @@
 NAME="p11-kit"
 VERS="0.25.5"
 TYPE=""
-DEPS=""
+DEPS="libtasn1 nss"
 LINK="https://github.com/p11-glue/p11-kit/releases/download/$VERS/p11-kit-$VERS.tar.xz"
 
 get() {

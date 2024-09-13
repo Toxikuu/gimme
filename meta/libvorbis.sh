@@ -1,7 +1,7 @@
 NAME="libvorbis"
 VERS="1.3.7"
 TYPE="extra"
-DEPS=""
+DEPS="libogg"
 LINK="https://downloads.xiph.org/releases/vorbis/libvorbis-$VERS.tar.xz"
 
 get() {
