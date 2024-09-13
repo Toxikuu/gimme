@@ -5,3 +5,6 @@ src
 tracking
 test.py
 tracking.bak
+meta/tmpl
+meta/y2sh
+meta/wrap
