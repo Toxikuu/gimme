@@ -1,5 +1,5 @@
 NAME="mesa"
-VERS="version: 24.2.2"
+VERS="24.2.2"
 TYPE=""
 DEPS=""
 LINK="https://mesa.freedesktop.org/archive/mesa-$VERS.tar.xz"

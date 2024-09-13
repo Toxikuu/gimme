@@ -1,5 +1,5 @@
 NAME="nghttp2"
-VERS="version: 1.63.0"
+VERS="1.63.0"
 TYPE=""
 DEPS=""
 LINK="https://github.com/nghttp2/nghttp2/releases/download/v$VERS/nghttp2-$VERS.tar.xz"

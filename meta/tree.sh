@@ -1,5 +1,5 @@
 NAME="tree"
-VERS="version: 2.1.3"
+VERS="2.1.3"
 TYPE=""
 DEPS=""
 LINK="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$VERS/unix-tree-$VERS.tar.bz2"

@@ -1,5 +1,5 @@
 NAME="mtdev"
-VERS="version: 1.1.7"
+VERS="1.1.7"
 TYPE=""
 DEPS=""
 LINK="url: https://bitmath.org/code/mtdev/mtdev-$VERS.tar.bz2"
