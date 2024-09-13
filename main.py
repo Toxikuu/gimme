@@ -329,10 +329,11 @@ class ControlPanel:
                 msg("Resolving dependencies...")
                 for dep in package.deps:
                     pkg = self.load_package(dep)
-                    if not self.package_manager.install_check(package):
+                    if self.package_manager.install_check(package):
+                        self.resolve_deps(pkg)
+                        self.package_manager.get_package(pkg)
+                    else:
                         return False
-                    self.resolve_deps(pkg)
-                    self.package_manager.get_package(pkg)
             else:
                 msg(f"Cancelling installation of {package}")
                 return False
