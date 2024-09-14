@@ -53,6 +53,8 @@ def cmd(command, co=False, v=False):
 
 
 def str_to_bool(string):
+    if string.lower() == "ask":
+        return "ask"
     return string.lower() in ('true', 'yes', '1', 'on', 'enabled')
 
 
