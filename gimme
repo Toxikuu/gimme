@@ -19,4 +19,4 @@ fi
 #
 # EOF
 
-python main.py "$@"
+./main.py "$@"
