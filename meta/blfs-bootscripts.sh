@@ -1,15 +1,12 @@
-NAME="vulkan-headers"
-VERS="1.3.295"
+NAME="blfs-bootscripts"
+VERS="20240416"
 TYPE="extra"
-DEPS="cmake"
-LINK="https://github.com/KhronosGroup/Vulkan-Headers/archive/v$VERS/Vulkan-Headers-$VERS.tar.gz"
+DEPS=""
+LINK="https://anduin.linuxfromscratch.org/BLFS/blfs-bootscripts/blfs-bootscripts-$VERS.tar.xz"
 
 get() {
-  mkdir build &&
-  cd    build &&
-
-  cmake -D CMAKE_INSTALL_PREFIX=/usr -G Ninja .. &&
-  ninja && ninja install
+  make install-service-dhcpcd
+  make install-dbus
 }
 
 remove() {
