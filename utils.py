@@ -52,28 +52,13 @@ def cmd(command, co=False, v=False):
         return False
 
 
-def command(command, co=False, v=False):
+def vcmd(command):
     try:
-        process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-        output = []
-        # the below throws a pyright warning that idk how to fix
-        for line in process.stdout:
-            if v:
-                print(line, end='')
-            if co:
-                output.append(line.strip())
-
-        _, stderr = process.communicate()
-
-        if process.returncode != 0:
-            erm(f"Command '{command}' failed with error: {stderr.strip()}")
-            return False
-
-        if co:
-            return '\n'.join(output)
+        subprocess.run(command, shell=True, check=True)
         return True
-
+    except subprocess.CalledProcessError as e:
+        erm(f"Command '{command}' failed with error: {e.stderr}")
+        return False
     except Exception as e:
         erm(f"An unexpected error occurred: {e}")
         return False
