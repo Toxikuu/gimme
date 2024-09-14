@@ -10,7 +10,9 @@ get() {
 }
 
 remove() {
-  echo not implemented
+  rm -vf              \
+  /usr/bin/tree       \
+  /usr/share/man/man1/tree.1
 }
 
 
