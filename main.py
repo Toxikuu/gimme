@@ -389,7 +389,7 @@ def read_config(config_file):
 if __name__ == "__main__":
     d = debug()
 
-    cfg = read_config(f"{get_script_dir}/gimme.conf")
+    cfg = read_config(f"{get_script_dir()}/gimme.conf")
 
     pm = PackageManager(
         cfg=cfg
