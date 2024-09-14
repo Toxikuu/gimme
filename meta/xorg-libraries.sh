@@ -45,16 +45,6 @@ EOF
   grep -v '^#' ../lib-7-list | wget -i- -c \
       -B https://www.x.org/pub/individual/lib/
 
-  as_root()
-  {
-    if   [ $EUID = 0 ];        then $*
-    elif [ -x /usr/bin/sudo ]; then sudo $*
-    else                            su -c \\"$*\\"
-    fi
-  }
-
-  export -f as_root
-
   bash -e
 
   for package in $(grep -v '^#' ../lib-7-list)
@@ -93,9 +83,9 @@ EOF
           ninja
           #ninja test
           DESTDIR=$PWD/DESTDIR ninja install
-          as_root cp -vr DESTDIR/$XORG_PREFIX/lib32/* $XORG_PREFIX/lib32
+          cp -vr DESTDIR/$XORG_PREFIX/lib32/* $XORG_PREFIX/lib32
           rm -rf DESTDIR
-          as_root /sbin/ldconfig
+          /sbin/ldconfig
         popd     # $packagedir
         rm -rf $packagedir
         continue # for loop
@@ -106,7 +96,7 @@ EOF
           ./configure $XORG_CONFIG $libdir $host $docdir
           make
           make DESTDIR=$PWD/DESTDIR install
-          as_root cp -vr DESTDIR/$XORG_PREFIX/share/pkgconfig/* $XORG_PREFIX/lib32/pkgconfig
+          cp -vr DESTDIR/$XORG_PREFIX/share/pkgconfig/* $XORG_PREFIX/lib32/pkgconfig
           rm -rf DESTDIR
         popd
         rm -rf $packagedir
@@ -123,11 +113,11 @@ EOF
     make
     #make check 2>&1 | tee ../$packagedir-make_check.log
     make DESTDIR=$PWD/DESTDIR install
-    as_root cp -vr DESTDIR/$XORG_PREFIX/lib32/* $XORG_PREFIX/lib32
+    cp -vr DESTDIR/$XORG_PREFIX/lib32/* $XORG_PREFIX/lib32
     rm -rf DESTDIR
     popd
     rm -rf $packagedir
-    as_root /sbin/ldconfig
+    /sbin/ldconfig
   done
 
   exit
