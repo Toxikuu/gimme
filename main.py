@@ -1,4 +1,4 @@
-#!/bin/python
+#!venv/bin/python
 # TODO: Improve error handling
 # TODO: Add more meta files
 # TODO: Untrack older versions of updated packages (might be done with the purge action; more testing needed)
@@ -7,6 +7,7 @@ from utils import display_list, erm, msg, cmd, prompt, str_to_bool, title, debug
 import os
 import configparser
 import argparse
+import networkx as nx
 
 
 class Package:
@@ -28,11 +29,12 @@ class PackageManager:
         self.meta_directory = f"{os.path.dirname(os.path.abspath(__file__))}/meta"
         self.tracking_file = f"{os.path.dirname(os.path.abspath(__file__))}/tracking"
 
+        # note: str_to_bool allows for "ask" to be returned
         self.remove_build_dirs = str_to_bool(cfg["Removal"]["build_dirs"])
         self.remove_tarballs = str_to_bool(cfg["Removal"]["tarballs"])
 
         self.dependencies_yes = str_to_bool(cfg["Automation"]["dependencies"])
-        self.reinstall_yes = str_to_bool(cfg["Automation"]["reinstall"])
+        self.auto_reinstall = str_to_bool(cfg["Automation"]["reinstall"])
 
         with open(self.tracking_file, 'r') as f:
             lines = f.readlines()
@@ -42,17 +44,12 @@ class PackageManager:
 
     def is_installed(self, package):
         if str(package) in self.installed_packages:
-            return True
-    # def install_check(self, package):
-    #     if not Q:
-    #         msg(f"Checking if package '{package}' is installed...")
-    #     if str(package) in self.installed_packages:
-    #         if not self.reinstall_yes:
-    #             return not prompt(f"Package '{package}' already installed! Reinstall?", default='n')
-    #         else:
-    #             if not Q:
-    #                 msg("Reinstallation automation is enabled")
-    #     return True
+            msg(f"Package '{package}' already installed")
+            if self.auto_reinstall == 'ask':
+                return not prompt("Reinstall?", default='n')
+            if not Q:
+                msg(f"Autoreinstall is set to {self.auto_reinstall}")
+            return not self.auto_reinstall
 
     def type__check(self, package):
         if not Q:
@@ -68,7 +65,7 @@ class PackageManager:
                 return True
             case "critical":
                 erm(f"Package '{package}' is of type 'critical'")
-                if prompt("Proceed with isntallation?", default='n'):
+                if prompt("Proceed with installation?", default='n'):
                     return True
                 return False
             case _:
@@ -261,7 +258,7 @@ class ControlPanel:
         return vars
 
     def load_package(self, pkg):
-        result = cmd(f"bash {self.package_manager.meta_directory}/{pkg}.sh vars", co=True, v=V)
+        result = cmd(f"bash {self.package_manager.meta_directory}/{pkg}.sh vars", co=True, v=False)
         if not result:
             erm("Failed to retrieve package information")
             return None
@@ -313,11 +310,13 @@ class ControlPanel:
 
         return parser.parse_args()
 
-    def dep_list(self, package, visited=None):
+    def dep_list(self, package, visited=None, graph=None):
         # return a deep list of all dependencies for a package
 
         if visited is None:
             visited = set()
+        if graph is None:
+            graph = nx.DiGraph()
 
         if package.name in visited:
             return
@@ -328,10 +327,16 @@ class ControlPanel:
             # display_list(package.deps)
 
             for dep in package.deps:
-                pkg = self.load_package(dep)
-                self.dep_list(pkg, visited)
+                dep = dep.strip()
+                graph.add_edge(package.name, dep)
 
-        return list(dict.fromkeys(visited))
+                pkg = self.load_package(dep)
+                self.dep_list(pkg, visited, graph)
+
+        topo_order = list(nx.topological_sort(graph))
+        if V:
+            print(topo_order)
+        return topo_order[::-1]
 
     def resolve_deps(self, dependencies_list):
         title("Deep dependency list:")
