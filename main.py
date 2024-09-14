@@ -3,7 +3,7 @@
 # TODO: Add more meta files
 # TODO: Untrack older versions of updated packages (might be done with the purge action; more testing needed)
 # TODO: Use regex for purging
-from utils import display_list, erm, msg, cmd, prompt, str_to_bool, title, debug
+from utils import display_list, erm, msg, cmd, command, prompt, str_to_bool, title, debug
 import os
 import configparser
 import argparse
@@ -99,7 +99,7 @@ class PackageManager:
         try:
             if package.link == "":
                 if not Q:
-                    msg(f"Not extrarcting tarball for linkless package '{package}'")
+                    msg(f"Not extracting tarball for linkless package '{package}'")
                 return True
             if os.path.isfile(package.tarball):
                 if not Q:
@@ -138,7 +138,7 @@ class PackageManager:
             if not Q:
                 msg(f"Building {package}...")
             # mkdir -p is necessary for certain packages (tzdata for instance)
-            if cmd(f"mkdir -pv {package} && cd {package} && bash {self.meta_directory}/{package.name}.sh get", v=V):
+            if command(f"mkdir -pv {package} && cd {package} && bash {self.meta_directory}/{package.name}.sh get", v=V, co=False):
                 msg(f"Successfully installed {package}")
                 return True
             else:
