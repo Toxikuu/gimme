@@ -2,7 +2,7 @@ NAME="vulkan-loader"
 VERS="1.3.295"
 TYPE="extra"
 DEPS="cmake vulkan-headers xorg-libraries"
-LINK="https://github.com/KhronosGroup/Vulkan-Headers/archive/v$VERS/Vulkan-Headers-$VERS.tar.gz"
+LINK="https://github.com/KhronosGroup/Vulkan-Loader/archive/v$VERS/Vulkan-Loader-$VERS.tar.gz"
 
 get() {
   mkdir build &&
