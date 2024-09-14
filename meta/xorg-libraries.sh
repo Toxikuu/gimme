@@ -45,8 +45,57 @@ EOF
   grep -v '^#' ../lib-7-list | wget -i- -c \
       -B https://www.x.org/pub/individual/lib/
 
-  bash -e
+  ### 64 bit
+  for package in $(grep -v '^#' ../lib-7-list)
+  do
+    packagedir=${package%.tar.?z*}
+    echo "Building $packagedir"
 
+    tar -xf $package
+    pushd $packagedir
+    docdir="--docdir=$XORG_PREFIX/share/doc/$packagedir"
+    
+    case $packagedir in
+      libXfont2-[0-9]* )
+        ./configure $XORG_CONFIG $docdir --disable-devel-docs
+      ;;
+
+      libXt-[0-9]* )
+        ./configure $XORG_CONFIG $docdir \
+                    --with-appdefaultdir=/etc/X11/app-defaults
+      ;;
+
+      libXpm-[0-9]* )
+        ./configure $XORG_CONFIG $docdir --disable-open-zfile
+      ;;
+    
+      libpciaccess* )
+        mkdir build
+        cd    build
+          meson setup --prefix=$XORG_PREFIX --buildtype=release ..
+          ninja
+          #ninja test
+          ninja install
+        popd     # $packagedir
+        rm -rf $packagedir
+        continue # for loop
+      ;;
+
+      * )
+        ./configure $XORG_CONFIG $docdir
+      ;;
+    esac
+
+    make
+    #make check 2>&1 | tee ../$packagedir-make_check.log
+    make install
+    popd
+    rm -rf $packagedir
+    /sbin/ldconfig
+  done
+
+
+  ### 32 bit
   for package in $(grep -v '^#' ../lib-7-list)
   do
     packagedir=${package%.tar.?z*}
@@ -119,8 +168,6 @@ EOF
     rm -rf $packagedir
     /sbin/ldconfig
   done
-
-  exit
 
   # assuming XORG_PREFIX=/usr because i cba to check lol
 }
