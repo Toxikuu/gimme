@@ -267,13 +267,14 @@ class ControlPanel:
             return None
 
         vars = self.parse_package_vars(result)
+        deps = vars.get("DEPS", [])
 
         package = Package(
-            name=vars.get("NAME", ""),
-            vers=vars.get("VERS", ""),
-            type_=vars.get("TYPE", ""),
-            link=vars.get("LINK", ""),
-            deps=vars.get("DEPS", []),
+            name=vars.get("NAME", "").strip(),
+            vers=vars.get("VERS", "").strip(),
+            type_=vars.get("TYPE", "").strip(),
+            link=vars.get("LINK", "").strip(),
+            deps=[dep.strip() for dep in deps],
         )
         return package
 
@@ -318,10 +319,10 @@ class ControlPanel:
         if visited is None:
             visited = set()
 
-        if package in visited:
+        if package.name in visited:
             return
 
-        visited.add(package)
+        visited.add(package.name)
         if package.deps:
             # title(f"Dependencies for {package}:")
             # display_list(package.deps)
@@ -330,14 +331,14 @@ class ControlPanel:
                 pkg = self.load_package(dep)
                 self.dep_list(pkg, visited)
 
-        deps = list(visited)
-        return list(dict.fromkeys(deps))
+        return list(dict.fromkeys(visited))
 
     def resolve_deps(self, dependencies_list):
         title("Deep dependency list:")
         display_list(dependencies_list)
 
-        for pkg in dependencies_list:
+        for dep in dependencies_list:
+            pkg = self.load_package(dep)
             if not self.package_manager.is_installed(pkg):
                 self.package_manager.get_package(pkg)
 
