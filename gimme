@@ -5,11 +5,23 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-. ./gimme.env
-mkdir -pv src
+SCRIPTDIR=$(dirname "$(realpath "$0")")
+
+. $SCRIPTDIR/gimme.env
+
+if [ ! -d "$SCRIPTDIR/src" ]; then
+  mkdir -pv "$SCRIPTDIR/src"
+fi
+
+if [ ! -d "$SCRIPTDIR/venv" ]; then
+  python3 -m venv "$SCRIPTDIR/venv"
+fi
+
 if [ ! -e tracking ]; then
   touch tracking
 fi
+
+
 
 # cat << EOF
 # ENVIRONMENT VARIABLES:
@@ -19,4 +31,4 @@ fi
 #
 # EOF
 
-./main.py "$@"
+$SCRIPTDIR/main.py "$@"
