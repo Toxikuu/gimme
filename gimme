@@ -31,4 +31,4 @@ fi
 #
 # EOF
 
-$SCRIPTDIR/main.py "$@"
+$SCRIPTDIR/venv/bin/python3 $SCRIPTDIR/main.py "$@"
