@@ -1,4 +1,5 @@
 import subprocess
+import os
 from pprint import pprint
 
 
@@ -17,6 +18,10 @@ class debug:
     def pr(self, string):
         print(f" </> \x1b[1;3m{string}\x1b[0m")
         self.step()
+
+
+def get_script_dir():
+    return os.path.dirname(os.path.abspath(__file__))
 
 
 def msg(message):
