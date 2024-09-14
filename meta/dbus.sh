@@ -14,7 +14,7 @@ get() {
               --disable-static                     \
               --with-systemduserunitdir=no         \
               --with-systemdsystemunitdir=no       \
-              --docdir=/usr/share/doc/dbus-1.14.10  \
+              --docdir=/usr/share/doc/dbus-$VERS   \
               --with-system-socket=/run/dbus/system_bus_socket &&
   make && make install
 
@@ -37,9 +37,10 @@ get() {
 EOF
 
   wget https://anduin.linuxfromscratch.org/BLFS/blfs-bootscripts/blfs-bootscripts-20240416.tar.xz &&
-  cd blfs-bootscripts-20240416
+  tar xvf blfs-bootscripts-20240416.tar.xz &&
+  pushd blfs-bootscripts-20240416
   make install-dbus
-  cd ..
+  popd
 }
 
 remove() {
