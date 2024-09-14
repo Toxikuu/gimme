@@ -3,7 +3,7 @@
 # TODO: Add more meta files
 # TODO: Untrack older versions of updated packages (might be done with the purge action; more testing needed)
 # TODO: Use regex for purging
-from utils import display_list, erm, msg, cmd, vcmd, prompt, str_to_bool, title, debug
+from utils import display_list, erm, msg, cmd, vcmd, prompt, str_to_bool, title, debug, get_script_dir
 import os
 import configparser
 import argparse
@@ -389,7 +389,7 @@ def read_config(config_file):
 if __name__ == "__main__":
     d = debug()
 
-    cfg = read_config("gimme.conf")
+    cfg = read_config(f"{get_script_dir}/gimme.conf")
 
     pm = PackageManager(
         cfg=cfg
