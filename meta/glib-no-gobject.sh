@@ -1,4 +1,4 @@
-NAME="glib-no-gobject.sh"
+NAME="glib-no-gobject"
 VERS="2.82.0"
 TYPE="extra"
 DEPS=""
