@@ -47,7 +47,7 @@ class PackageManager:
             msg(f"Package '{package}' already installed")
             if self.auto_reinstall == 'ask':
                 return not prompt("Reinstall?", default='n')
-            if not Q:
+            if V:
                 msg(f"Autoreinstall is set to {self.auto_reinstall}")
             return not self.auto_reinstall
 
