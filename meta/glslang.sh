@@ -2,7 +2,7 @@ NAME="glslang"
 VERS="14.3.0"
 TYPE="extra"
 DEPS="cmake spirv-tools"
-LINK=""
+LINK="https://github.com/KhronosGroup/glslang/archive/$VERS/glslang-$VERS.tar.gz"
 
 get() {
   mkdir build &&
