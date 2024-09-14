@@ -1,4 +1,4 @@
-NAME="glib"
+NAME="glib-full"
 VERS="2.82.0"
 TYPE="core"
 DEPS=""

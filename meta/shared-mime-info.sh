@@ -1,7 +1,7 @@
 NAME="shared-mime-info"
 VERS="2.4"
 TYPE="extra"
-DEPS="glib libxml2"
+DEPS="glib-no-gobject libxml2"
 LINK="https://gitlab.freedesktop.org/xdg/shared-mime-info/-/archive/2.4/shared-mime-info-2.4.tar.gz"
 
 get() {

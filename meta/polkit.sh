@@ -1,7 +1,7 @@
 NAME="polkit"
 VERS="125"
 TYPE="extra"
-DEPS="duktape glib linux-pam elogind"
+DEPS="duktape glib-no-gobject linux-pam elogind"
 LINK="https://github.com/polkit-org/polkit/archive/$VERS/polkit-$VERS.tar.gz"
 
 get() {

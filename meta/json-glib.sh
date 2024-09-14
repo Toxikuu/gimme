@@ -2,7 +2,7 @@ NAME="json-glib"
 VERS="1.10.0"
 TYPE=""
 DEPS=""
-LINK="https://download.gnome.org/sources/json-glib/$(echo \"$VERS\" | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1/')/json-glib-$VERS.tar.xz"
+LINK="https://download.gnome.org/sources/json-glib/$(echo $VERS | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1/')/json-glib-$VERS.tar.xz"
 
 get() {
   mkdir -v build && cd build &&

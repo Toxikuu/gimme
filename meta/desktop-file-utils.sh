@@ -1,7 +1,7 @@
 NAME="desktop-file-utils"
 VERS="0.27"
 TYPE="extra"
-DEPS="glib"
+DEPS="glib-no-gobject"
 LINK="https://www.freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-$VERS.tar.xz"
 
 get() {
