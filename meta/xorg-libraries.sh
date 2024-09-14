@@ -169,7 +169,8 @@ EOF
     /sbin/ldconfig
   done
 
-  # assuming XORG_PREFIX=/usr because i cba to check lol
+  # TODO: Make a tar archive of all of these packages and copy it to src/ for consistency
+  # Also note, the commands for XORG_PREFIX != /usr aren't implemented here
 }
 
 remove() {

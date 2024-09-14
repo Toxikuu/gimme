@@ -1,7 +1,7 @@
 NAME="cmake"
 VERS="3.30.3"
 TYPE="core"
-DEPS="curl libarchive libuv nghttp2"
+DEPS="curl libuv libarchive nghttp2" # idt it actually needs any/all of these but :shrug:
 LINK="https://cmake.org/files/v$(echo $VERS | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1/')/cmake-$VERS.tar.gz"
 
 get() {
