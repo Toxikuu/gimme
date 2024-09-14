@@ -1,15 +1,18 @@
-NAME="wayland-protocols"
-VERS="1.37"
-TYPE=""
-DEPS="wayland"
-LINK="https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/$VERS/downloads/wayland-protocols-$VERS.tar.xz"
+NAME="desktop-file-utils"
+VERS="0.27"
+TYPE="extra"
+DEPS="glib"
+LINK="https://www.freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-$VERS.tar.xz"
 
 get() {
   mkdir build &&
   cd    build &&
 
-  meson setup --prefix=/usr --buildtype=release &&
+  meson setup --prefix=/usr --buildtype=release .. &&
   ninja && ninja install
+
+  install -vdm755 /usr/share/applications &&
+  update-desktop-database /usr/share/applications
 }
 
 remove() {

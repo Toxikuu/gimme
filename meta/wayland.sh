@@ -1,7 +1,7 @@
 NAME="wayland"
 VERS="1.23.1"
 TYPE=""
-DEPS=""
+DEPS="libxml2"
 LINK="https://gitlab.freedesktop.org/wayland/wayland/-/releases/$VERS/downloads/wayland-$VERS.tar.xz"
 
 get() {

@@ -1,12 +1,17 @@
-NAME="mtdev"
-VERS="1.1.7"
+NAME="nettle"
+VERS="3.10"
 TYPE="extra"
 DEPS=""
-LINK="https://bitmath.org/code/mtdev/mtdev-$VERS.tar.bz2"
+LINK="https://ftp.gnu.org/gnu/nettle/nettle-$VERS.tar.gz"
 
 get() {
   ./configure --prefix=/usr --disable-static &&
-  make && make install
+  make
+
+  make install &&
+  chmod   -v   755 /usr/lib/lib{hogweed,nettle}.so &&
+  install -v -m755 -d /usr/share/doc/nettle-3.10 &&
+  install -v -m644 nettle.{html,pdf} /usr/share/doc/nettle-3.10
 }
 
 remove() {

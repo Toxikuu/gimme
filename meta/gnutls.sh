@@ -1,11 +1,13 @@
-NAME="mtdev"
-VERS="1.1.7"
+NAME="gnutls"
+VERS="3.8.7.1"
 TYPE="extra"
-DEPS=""
-LINK="https://bitmath.org/code/mtdev/mtdev-$VERS.tar.bz2"
+DEPS="nettle make-ca libunistring libtasn1 p11-kit"
+LINK="https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-$VERS.tar.xz"
 
 get() {
-  ./configure --prefix=/usr --disable-static &&
+  ./configure --prefix=/usr \
+              --docdir=/usr/share/doc/gnutls-$VERS \
+              --with-default-trust-store-pkcs11="pkcs11:" &&
   make && make install
 }
 

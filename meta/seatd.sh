@@ -1,12 +1,15 @@
-NAME="mtdev"
-VERS="1.1.7"
+NAME="seatd"
+VERS="0.8.0"
 TYPE="extra"
-DEPS=""
-LINK="https://bitmath.org/code/mtdev/mtdev-$VERS.tar.bz2"
+DEPS="elogind"
+LINK="https://git.sr.ht/~kennylevinsen/seatd/archive/$VERS.tar.gz"
 
 get() {
-  ./configure --prefix=/usr --disable-static &&
-  make && make install
+  mkdir build                  &&
+  cd    build
+
+  meson setup --prefix=/usr .. &&
+  ninja && ninja install
 }
 
 remove() {

@@ -1,19 +1,20 @@
-NAME="wayland-protocols"
-VERS="1.37"
-TYPE=""
-DEPS="wayland"
-LINK="https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/$VERS/downloads/wayland-protocols-$VERS.tar.xz"
+NAME="pixman"
+VERS="0.43.4"
+TYPE="extra"
+DEPS=""
+LINK="https://www.cairographics.org/releases/pixman-$VERS.tar.gz"
 
 get() {
   mkdir build &&
   cd    build &&
 
-  meson setup --prefix=/usr --buildtype=release &&
+  meson setup --prefix=/usr --buildtype=release .. &&
   ninja && ninja install
 }
 
 remove() {
-  echo not implemented
+  rm -rvf /usr/include/pixman-1/    \
+  /usr/lib{,32}/libpixman-1.so*
 }
 
 

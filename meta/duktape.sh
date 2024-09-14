@@ -1,12 +1,13 @@
-NAME="mtdev"
-VERS="1.1.7"
+NAME="duktape"
+VERS="2.7.0"
 TYPE="extra"
 DEPS=""
-LINK="https://bitmath.org/code/mtdev/mtdev-$VERS.tar.bz2"
+LINK="https://duktape.org/duktape-$VERS.tar.xz"
 
 get() {
-  ./configure --prefix=/usr --disable-static &&
-  make && make install
+  sed -i 's/-Os/-O2/' Makefile.sharedlibrary
+  make -f Makefile.sharedlibrary INSTALL_PREFIX=/usr
+  make -f Makefile.sharedlibrary INSTALL_PREFIX=/usr install
 }
 
 remove() {

@@ -1,14 +1,14 @@
-NAME="wayland-protocols"
-VERS="1.37"
-TYPE=""
-DEPS="wayland"
-LINK="https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/$VERS/downloads/wayland-protocols-$VERS.tar.xz"
+NAME="shared-mime-info"
+VERS="2.4"
+TYPE="extra"
+DEPS="glib libxml2"
+LINK="https://gitlab.freedesktop.org/xdg/shared-mime-info/-/archive/2.4/shared-mime-info-2.4.tar.gz"
 
 get() {
   mkdir build &&
   cd    build &&
 
-  meson setup --prefix=/usr --buildtype=release &&
+  meson setup --prefix=/usr --buildtype=release -D update-mimedb=true .. &&
   ninja && ninja install
 }
 
