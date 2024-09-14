@@ -350,7 +350,7 @@ class ControlPanel:
     def resolve_deps(self, dependencies_list):
         title("Deep dependency list:")
         display_list(dependencies_list)
-
+        
         for dep in dependencies_list:
             pkg = self.load_package(dep)
             if not self.package_manager.is_installed(pkg):
@@ -367,7 +367,11 @@ class ControlPanel:
             for arg in args.get:
                 package = self.load_package(arg)
                 dependencies_list = self.dep_list(package)
-                self.resolve_deps(dependencies_list)
+                if dependencies_list:
+                    self.resolve_deps(dependencies_list)
+                else:
+                    if not self.package_manager.is_installed(package):
+                        self.package_manager.get_package(package)
 
         if args.remove:
             for arg in args.remove:
