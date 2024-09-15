@@ -22,7 +22,9 @@ get() {
   ninja &&
   ninja install &&
 
+  pushd ..
   wget https://download.gnome.org/sources/gobject-introspection/1.80/gobject-introspection-1.80.1.tar.xz
+  popd
   tar xvf ../gobject-introspection-1.80.1.tar.xz &&
   meson setup gobject-introspection-1.80.1 gi-build \
             -D cairo=false -D doctool=false         \
