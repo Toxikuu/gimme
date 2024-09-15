@@ -13,6 +13,7 @@ get() {
         --buildtype=release      \
         -D osmesa=true           \
         -D platforms=x11         \
+        -D dri-drivers=disabled  \
         -D gallium-drivers=auto  \
         -D vulkan-drivers=auto   \
         -D valgrind=disabled     \
@@ -28,7 +29,8 @@ get() {
         --libdir=$XORG_PREFIX/lib32            \
         --buildtype=release                    \
         -D osmesa=true                         \
-        -D platforms=x11,wayland               \
+        -D platforms=x11                       \
+        -D dri-drivers=disabled                \
         -D gallium-drivers=auto                \
         -D vulkan-drivers=auto                 \
         -D valgrind=disabled                   \

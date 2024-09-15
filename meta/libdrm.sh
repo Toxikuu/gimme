@@ -6,16 +6,16 @@ LINK="https://dri.freedesktop.org/libdrm/libdrm-$VERS.tar.xz"
 
 get() {
   mkdir build && cd build
-  meson setup --prefix=$XORG_PREFIX \
-              --buildtype=release \
-              -D udev=true \
-              -D valgrind=disabled \
-              -D intel=disabled \
-              -D radeon=disabled \
-              -D amdgpu=disabled \
-              -D nouveau=disabled \
-              -D vmwgfx=disabled \
-              -D tests=false \
+  meson setup --prefix=$XORG_PREFIX   \
+              --buildtype=release     \
+              -D udev=true            \
+              -D valgrind=disabled    \
+              -D intel=disabled       \
+              -D radeon=disabled      \
+              -D amdgpu=disabled      \
+              -D nouveau=disabled     \
+              -D vmwgfx=disabled      \
+              -D tests=false          \
               -D cairo-tests=disabled \
               .. &&
   ninja && ninja install &&
@@ -27,13 +27,13 @@ get() {
               --libdir=$XORG_PREFIX/lib32      \
               -D udev=true                     \
               -D valgrind=disabled             \
-              -D intel=disabled \
-              -D radeon=disabled \
-              -D amdgpu=disabled \
-              -D nouveau=disabled \
-              -D vmwgfx=disabled \
-              -D tests=false \
-              -D cairo-tests=disabled \
+              -D intel=disabled                \
+              -D radeon=disabled               \
+              -D amdgpu=disabled               \
+              -D nouveau=disabled              \
+              -D vmwgfx=disabled               \
+              -D tests=false                   \
+              -D cairo-tests=disabled          \
               .. &&
   ninja &&
   DESTDIR=$PWD/DESTDIR ninja install &&
