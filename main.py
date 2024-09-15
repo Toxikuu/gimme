@@ -162,10 +162,18 @@ class PackageManager:
 
     def clean_up(self, package, tarball=False, build_dir=False):
         try:
-            if tarball:
+            if tarball == "ask":
+                if prompt(f"Remove tarball '{package.tarball}'?", default='y'):
+                    cmd(f"rm -vf {package.tarball}", v=V)
+            elif tarball:
                 cmd(f"rm -vf {package.tarball}", v=V)
-            if build_dir:
+
+            if build_dir == "ask":
+                if prompt(f"Remove build directory for package '{package}'?", default='y'):
+                    cmd(f"rm -rf {package}", v=V)
+            elif build_dir:
                 cmd(f"rm -rf {package}", v=V)
+
         except KeyboardInterrupt:
             msg("Caught KeyboardInterrupt")
             msg("KeyboardInterrupt not allowed in clean_up()")
@@ -240,15 +248,16 @@ class PackageManager:
         if not self.build(package):
             erm(f"Failed to build package {package}")
             msg("This is likely an issue with the get function")
+        else:
+            self.track_package(package, "add")
 
         self.clean_up(package,
                       tarball=self.remove_tarballs,
                       build_dir=self.remove_build_dirs)
-        self.track_package(package, "add")
 
     def remove_package(self, package):
         self.uninstall(package)
-        self.clean_up(package, tarball=True, build_dir=True)
+        self.clean_up(package, build_dir=True)
         self.track_package(package, "remove")
 
 
