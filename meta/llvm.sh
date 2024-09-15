@@ -2,13 +2,13 @@ NAME="llvm"
 VERS="18.1.7"
 TYPE="extra"
 DEPS="cmake"
-LINK="https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.7/llvm-18.1.7.src.tar.xz"
+LINK="https://github.com/llvm/llvm-project/releases/download/llvmorg-$VERS/llvm-$VERS.src.tar.xz"
 
 get() {
   pushd ..
   wget https://anduin.linuxfromscratch.org/BLFS/llvm/llvm-cmake-18.src.tar.xz
   wget https://anduin.linuxfromscratch.org/BLFS/llvm/llvm-third-party-18.src.tar.xz
-  wget https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.7/clang-18.1.7.src.tar.xz
+  wget https://github.com/llvm/llvm-project/releases/download/llvmorg-$VERS/clang-$VERS.src.tar.xz
   popd
 
   tar -xf ../llvm-cmake-18.src.tar.xz                                   &&
@@ -18,8 +18,8 @@ get() {
   sed '/LLVM_THIRD_PARTY_DIR/s@../third-party@llvm-third-party-18.src@' \
       -i cmake/modules/HandleLLVMOptions.cmake
 
-  tar -xf ../clang-18.1.7.src.tar.xz -C tools &&
-  mv tools/clang-18.1.7.src tools/clang
+  tar -xf ../clang-$VERS.src.tar.xz -C tools &&
+  mv tools/clang-$VERS.src tools/clang
 
   grep -rl '#!.*python' | xargs sed -i '1s/python$/python3/'
 
@@ -34,7 +34,7 @@ get() {
         -D LLVM_BUILD_LLVM_DYLIB=ON                \
         -D LLVM_LINK_LLVM_DYLIB=ON                 \
         -D LLVM_ENABLE_RTTI=ON                     \
-        -D LLVM_TARGETS_TO_BUILD="X86;host;AMDGPU" \
+        -D LLVM_TARGETS_TO_BUILD="X86;host"        \
         -D LLVM_BINUTILS_INCDIR=/usr/include       \
         -D LLVM_INCLUDE_BENCHMARKS=OFF             \
         -D CLANG_DEFAULT_PIE_ON_LINUX=ON           \
@@ -60,7 +60,7 @@ get() {
         -D LLVM_LINK_LLVM_DYLIB=ON                        \
         -D LLVM_ENABLE_RTTI=ON                            \
         -D LLVM_DEFAULT_TARGET_TRIPLE="i686-pc-linux-gnu" \
-        -D LLVM_TARGETS_TO_BUILD="X86;host;AMDGPU"        \
+        -D LLVM_TARGETS_TO_BUILD="X86;host"               \
         -D LLVM_HOST_TRIPLE="x86_64-pc-linux-gnu"         \
         -D LLVM_BINUTILS_INCDIR=/usr/include              \
         -D LLVM_INCLUDE_BENCHMARKS=OFF                    \
