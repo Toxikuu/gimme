@@ -1,17 +1,14 @@
-NAME="libevdev"
-VERS="1.13.3"
+NAME="xkeyboardconfig"
+VERS="2.42"
 TYPE="extra"
-DEPS=""
-LINK="https://www.freedesktop.org/software/libevdev/libevdev-$VERS.tar.xz"
+DEPS="xorg-libraries"
+LINK="https://www.x.org/pub/individual/data/xkeyboard-config/xkeyboard-config-$VERS.tar.xz"
 
 get() {
   mkdir build &&
   cd    build &&
 
-  meson setup ..                \
-      --prefix=$XORG_PREFIX     \
-      --buildtype=release       \
-      -D documentation=disabled &&
+  meson setup --prefix=$XORG_PREFIX --buildtype=release .. &&
   ninja && ninja install
 }
 

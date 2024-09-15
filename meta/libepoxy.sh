@@ -1,17 +1,14 @@
-NAME="libevdev"
-VERS="1.13.3"
+NAME="libepoxy"
+VERS="1.5.10"
 TYPE="extra"
-DEPS=""
-LINK="https://www.freedesktop.org/software/libevdev/libevdev-$VERS.tar.xz"
+DEPS="mesa"
+LINK="https://download.gnome.org/sources/libepoxy/$(echo $VERS | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1/')/libepoxy-$VERS.tar.xz"
 
 get() {
   mkdir build &&
   cd    build &&
 
-  meson setup ..                \
-      --prefix=$XORG_PREFIX     \
-      --buildtype=release       \
-      -D documentation=disabled &&
+  meson setup --prefix=/usr --buildtype=release .. &&
   ninja && ninja install
 }
 
