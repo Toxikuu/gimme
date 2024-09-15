@@ -27,7 +27,7 @@ get() {
   popd
   tar xvf ../gobject-introspection-1.80.1.tar.xz &&
   meson setup gobject-introspection-1.80.1 gi-build \
-            -D cairo=false -D doctool=false         \
+            -D cairo=disabled -D doctool=disabled   \
             --prefix=/usr --buildtype=release     &&
   ninja -C gi-build &&
   ninja -C gi-build install &&
