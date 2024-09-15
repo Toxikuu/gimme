@@ -3,6 +3,7 @@
 # TODO: Add more meta files
 # TODO: Untrack older versions of updated packages (might be done with the purge action; more testing needed)
 # TODO: Use regex for purging
+# TODO: Fix the thing where stuff is tracked as installed after a failed build
 from utils import display_list, erm, msg, cmd, vcmd, prompt, str_to_bool, title, debug, get_script_dir
 import os
 import configparser
@@ -164,7 +165,7 @@ class PackageManager:
             if tarball:
                 cmd(f"rm -vf {package.tarball}", v=V)
             if build_dir:
-                cmd(f"rm -rvf {package}", v=V)
+                cmd(f"rm -rf {package}", v=V)
         except KeyboardInterrupt:
             msg("Caught KeyboardInterrupt")
             msg("KeyboardInterrupt not allowed in clean_up()")
