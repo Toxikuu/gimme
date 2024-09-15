@@ -1,7 +1,7 @@
 NAME="setuptools"
 VERS="74.1.2"
-TYPE=""
-DEPS=""
+TYPE="extra"
+DEPS="python"
 LINK="https://pypi.org/packages/source/s/setuptools/setuptools-$VERS.tar.gz"
 
 get() {
