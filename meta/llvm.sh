@@ -5,18 +5,20 @@ DEPS="cmake"
 LINK="https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.7/llvm-18.1.7.src.tar.xz"
 
 get() {
+  pushd ..
   wget https://anduin.linuxfromscratch.org/BLFS/llvm/llvm-cmake-18.src.tar.xz
   wget https://anduin.linuxfromscratch.org/BLFS/llvm/llvm-third-party-18.src.tar.xz
   wget https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.7/clang-18.1.7.src.tar.xz
+  popd
 
-  tar -xf ./llvm-cmake-18.src.tar.xz                                   &&
-  tar -xf ./llvm-third-party-18.src.tar.xz                             &&
-  sed '/LLVM_COMMON_CMAKE_UTILS/s@./cmake@llvm-cmake-18.src@'          \
+  tar -xf ../llvm-cmake-18.src.tar.xz                                   &&
+  tar -xf ../llvm-third-party-18.src.tar.xz                             &&
+  sed '/LLVM_COMMON_CMAKE_UTILS/s@../cmake@llvm-cmake-18.src@'          \
       -i CMakeLists.txt                                                 &&
-  sed '/LLVM_THIRD_PARTY_DIR/s@./third-party@llvm-third-party-18.src@' \
+  sed '/LLVM_THIRD_PARTY_DIR/s@../third-party@llvm-third-party-18.src@' \
       -i cmake/modules/HandleLLVMOptions.cmake
 
-  tar -xf ./clang-18.1.7.src.tar.xz -C tools &&
+  tar -xf ../clang-18.1.7.src.tar.xz -C tools &&
   mv tools/clang-18.1.7.src tools/clang
 
   grep -rl '#!.*python' | xargs sed -i '1s/python$/python3/'
