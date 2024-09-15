@@ -1,7 +1,7 @@
 NAME="spirv-llvm-translator"
 VERS="18.1.4"
-TYPE=""
-DEPS=""
+TYPE="extra"
+DEPS="cmake libxml2 llvm spirv-headers spirv-tools"
 LINK="https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/v$VERS/SPIRV-LLVM-Translator-$VERS.tar.gz"
 
 get() {
@@ -15,6 +15,7 @@ get() {
         -D LLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=/usr \
         -G Ninja ..                                    &&
   ninja && ninja install &&
+
   rm -rvf * &&
   CC="gcc -m32" CXX="g++ -m32"                         \
   PKG_CONFIG_PATH=/usr/lib32/pkgconfig                 \

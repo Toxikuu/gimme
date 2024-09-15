@@ -1,7 +1,7 @@
 NAME="mesa"
 VERS="24.2.2"
-TYPE=""
-DEPS=""
+TYPE="extra"
+DEPS="xorg-libraries libdrm mako pyyaml cbindgen rust-bindgen rustc glslang libclc libglvnd libva libvdpau llvm ply vulkan-loader wayland-protocols"
 LINK="https://mesa.freedesktop.org/archive/mesa-$VERS.tar.xz"
 
 get() {
@@ -19,6 +19,7 @@ get() {
         -D libunwind=disabled    &&
 
   ninja && ninja install
+
   rm -rf *
   CC="gcc -m32" CXX="g++ -m32"                 \
   PKG_CONFIG_PATH=$XORG_PREFIX/lib32/pkgconfig \

@@ -1,11 +1,11 @@
 NAME="libdrm"
 VERS="2.4.123"
-TYPE=""
-DEPS=""
+TYPE="extra"
+DEPS="xorg-libraries"
 LINK="https://dri.freedesktop.org/libdrm/libdrm-$VERS.tar.xz"
 
 get() {
-  ls && mkdir build && cd build
+  mkdir build && cd build
   meson setup --prefix=$XORG_PREFIX \
               --buildtype=release \
               -D udev=true \
