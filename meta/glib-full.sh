@@ -1,7 +1,7 @@
 NAME="glib-full"
 VERS="2.82.0"
 TYPE="core"
-DEPS=""
+DEPS="docutils libxslt pcre2 shared-mime-info desktop-file-utils"
 LINK="https://download.gnome.org/sources/glib/$(echo $VERS | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1/')/glib-$VERS.tar.xz"
 
 get() {
