@@ -10,6 +10,16 @@ get() {
 
   meson setup --prefix=/usr --buildtype=release .. &&
   ninja && ninja install
+
+  rm -rf *
+  CC="gcc -m32" CXX="g++ -m32" PKG_CONFIG_PATH=/usr/lib32/pkgconfig \
+        meson setup .. --prefix=/usr --libdir=/usr/lib32            \
+        --buildtype=release &&
+  ninja &&
+  DESTDIR=$PWD/DESTDIR ninja install
+  cp -vr DESTDIR/usr/lib32/* /usr/lib32
+  rm -rf DESTDIR
+  ldconfig
 }
 
 remove() {
