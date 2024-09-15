@@ -1,5 +1,6 @@
 NAME="glib-full"
 VERS="2.82.0"
+GOBJECT_VERS="1.82.0"
 TYPE="core"
 DEPS="docutils libxslt pcre2 shared-mime-info desktop-file-utils"
 LINK="https://download.gnome.org/sources/glib/$(echo $VERS | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1/')/glib-$VERS.tar.xz"
@@ -24,10 +25,10 @@ get() {
   ninja install &&
 
   pushd ../..
-  wget https://download.gnome.org/sources/gobject-introspection/1.80/gobject-introspection-1.80.2.tar.xz
+  wget https://download.gnome.org/sources/gobject-introspection/$(echo $GOBJECT_VERS | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1/')/gobject-introspection-$GOBJECT_VERS.tar.xz
   popd
-  tar xvf ../../gobject-introspection-1.80.2.tar.xz &&
-  meson setup gobject-introspection-1.80.2 gi-build \
+  tar xvf ../../gobject-introspection-$GOBJECT_VERS.tar.xz &&
+  meson setup gobject-introspection-$GOBJECT_VERS gi-build \
             -D cairo=disabled -D doctool=disabled   \
             --prefix=/usr --buildtype=release     &&
   ninja -C gi-build &&
