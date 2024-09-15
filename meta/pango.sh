@@ -2,7 +2,7 @@ NAME="pango"
 VERS="1.54.0"
 TYPE="extra"
 DEPS="fontconfig freetype harfbuzz fribidi glib-full cairo xorg-libraries"
-LINK="https://download.gnome.org/sources/pango/$(echo $VERS | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1/')/pango-$VERSION.tar.xz"
+LINK="https://download.gnome.org/sources/pango/$(echo $VERS | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1/')/pango-$VERS.tar.xz"
 
 get() {
   mkdir build &&
