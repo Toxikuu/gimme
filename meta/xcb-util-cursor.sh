@@ -1,5 +1,5 @@
 NAME="xcb-util-cursor"
-VERS="0.1.4"
+VERS="0.1.5"
 TYPE="extra"
 DEPS="xcb-util-image xcb-util-renderutil"
 LINK="https://xcb.freedesktop.org/dist/xcb-util-cursor-$VERS.tar.xz"

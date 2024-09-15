@@ -1,5 +1,5 @@
 NAME="libarchive"
-VERS="3.7.4"
+VERS="3.7.5"
 TYPE="extra"
 DEPS="libxml2"
 LINK="https://github.com/libarchive/libarchive/releases/download/v$VERS/libarchive-$VERS.tar.xz"

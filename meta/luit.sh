@@ -1,5 +1,5 @@
 NAME="luit"
-VERS="20240102"
+VERS="20240910"
 TYPE="extra"
 DEPS="xorg-applications"
 LINK="https://invisible-mirror.net/archives/luit/luit-$VERS.tgz"
