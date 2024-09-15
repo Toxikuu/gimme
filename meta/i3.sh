@@ -5,7 +5,9 @@ DEPS="xcb-util-keysyms xcb-util-wm libev yajl startup-notification pango perl xc
 LINK="https://github.com/i3/i3/archive/refs/tags/$VERS.tar.gz"
 
 get() {
-
+  mkdir -pv build
+  meson setup --prefix-/usr --buildtype=release build
+  meson compile -C build
 }
 
 remove() {
