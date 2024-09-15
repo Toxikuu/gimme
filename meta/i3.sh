@@ -1,15 +1,11 @@
-NAME="cairo"
-VERS="1.18.2"
+NAME="i3"
+VERS="4.23"
 TYPE="extra"
-DEPS="libpng pixman fontconfig glib-no-gobject xorg-libraries"
-LINK="https://www.cairographics.org/releases/cairo-$VERS.tar.xz"
+DEPS="xcb-util-keysyms xcb-util-wm libev yajl startup-notification pango perl xcb-util-cursor xcb-util-xrm"
+LINK="https://github.com/i3/i3/archive/refs/tags/$VERS.tar.gz"
 
 get() {
-  mkdir build &&
-  cd    build &&
 
-  meson setup --prefix=/usr --buildtype=release .. &&
-  ninja && ninja install
 }
 
 remove() {
