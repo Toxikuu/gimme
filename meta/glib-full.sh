@@ -9,6 +9,7 @@ get() {
     rm -rf /usr/include/glib-2.0.old &&
     mv -vf /usr/include/glib-2.0{,.old}
   fi
+
   mkdir build &&
   cd    build &&
 
@@ -23,10 +24,10 @@ get() {
   ninja install &&
 
   pushd ../..
-  wget https://download.gnome.org/sources/gobject-introspection/1.80/gobject-introspection-1.80.1.tar.xz
+  wget https://download.gnome.org/sources/gobject-introspection/1.80/gobject-introspection-1.80.2.tar.xz
   popd
-  tar xvf ../../gobject-introspection-1.80.1.tar.xz &&
-  meson setup gobject-introspection-1.80.1 gi-build \
+  tar xvf ../../gobject-introspection-1.80.2.tar.xz &&
+  meson setup gobject-introspection-1.80.2 gi-build \
             -D cairo=disabled -D doctool=disabled   \
             --prefix=/usr --buildtype=release     &&
   ninja -C gi-build &&
