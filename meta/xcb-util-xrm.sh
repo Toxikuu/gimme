@@ -2,7 +2,7 @@ NAME="xcb-util-xrm"
 VERS="1.3"
 TYPE="extra"
 DEPS="xcb-util"
-LINK="https://github.com/Airblader/xcb-util-xrm/archive/refs/tags/v$VERS.tar.gz"
+LINK="https://github.com/Airblader/xcb-util-xrm/releases/download/v$VERS/xcb-util-xrm-$VERS.tar.gz"
 
 get() {
   ./configure --prefix=/usr
