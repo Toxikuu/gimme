@@ -1,4 +1,4 @@
-NAME="xkeyboardconfig"
+NAME="xkeyboard-config"
 VERS="2.42"
 TYPE="extra"
 DEPS="xorg-libraries"
