@@ -5,7 +5,6 @@ DEPS="docutils libxslt pcre2 shared-mime-info desktop-file-utils"
 LINK="https://download.gnome.org/sources/glib/$(echo $VERS | sed 's/\([0-9]\+\.[0-9]\+\)\.[0-9]\+/\1/')/glib-$VERS.tar.xz"
 
 get() {
-  wget https://download.gnome.org/sources/gobject-introspection/1.80/gobject-introspection-1.80.1.tar.xz
   if [ -e /usr/include/glib-2.0 ]; then
     rm -rf /usr/include/glib-2.0.old &&
     mv -vf /usr/include/glib-2.0{,.old}
@@ -23,8 +22,10 @@ get() {
   ninja &&
   ninja install &&
 
+  wget https://download.gnome.org/sources/gobject-introspection/1.80/gobject-introspection-1.80.1.tar.xz
   tar xvf ../gobject-introspection-1.80.1.tar.xz &&
   meson setup gobject-introspection-1.80.1 gi-build \
+            -D cairo=false -D doctool=false         \
             --prefix=/usr --buildtype=release     &&
   ninja -C gi-build &&
   ninja -C gi-build install &&
