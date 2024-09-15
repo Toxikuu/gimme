@@ -8,16 +8,15 @@ get() {
   mkdir build &&
   cd    build &&
 
-  meson setup ..                 \
-        --prefix=$XORG_PREFIX    \
-        --buildtype=release      \
-        -D osmesa=true           \
-        -D platforms=x11         \
-        -D dri-drivers=disabled  \
-        -D gallium-drivers=auto  \
-        -D vulkan-drivers=auto   \
-        -D valgrind=disabled     \
-        -D libunwind=disabled    &&
+  meson setup ..                     \
+        --prefix=$XORG_PREFIX        \
+        --buildtype=release          \
+        -D osmesa=true               \
+        -D platforms=x11             \
+        -D gallium-drivers=llvmpipe  \
+        -D vulkan-drivers=""         \
+        -D valgrind=disabled         \
+        -D libunwind=disabled       &&
 
   ninja && ninja install
 
@@ -30,9 +29,8 @@ get() {
         --buildtype=release                    \
         -D osmesa=true                         \
         -D platforms=x11                       \
-        -D dri-drivers=disabled                \
-        -D gallium-drivers=auto                \
-        -D vulkan-drivers=auto                 \
+        -D gallium-drivers=llvmpipe            \
+        -D vulkan-drivers=""                   \
         -D valgrind=disabled                   \
         -D libunwind=disabled                  \
         -D glvnd=enabled                       \
