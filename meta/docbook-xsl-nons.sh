@@ -6,7 +6,7 @@ LINK="https://github.com/docbook/xslt10-stylesheets/releases/download/release/$V
 
 get() {
   wget https://www.linuxfromscratch.org/patches/blfs/svn/docbook-xsl-nons-$VERS-stack_fix-1.patch
-  patch -Np1 -i ../docbook-xsl-nons-$VERS-stack_fix-1.patch
+  patch -Np1 -i ./docbook-xsl-nons-$VERS-stack_fix-1.patch
 
   install -v -m755 -d /usr/share/xml/docbook/xsl-stylesheets-nons-$VERS &&
 
