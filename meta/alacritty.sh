@@ -1,7 +1,7 @@
 NAME="alacritty"
 VERS="0.13.2"
 TYPE="extra"
-DEPS="freetype2 fontconfig xorg-libraries xcb-util-cursor rustc cmake desktop-file-utils libxcb"
+DEPS="freetype fontconfig xorg-libraries xcb-util-cursor rustc cmake desktop-file-utils libxcb"
 LINK="https://github.com/alacritty/alacritty/archive/refs/tags/v$VERS.tar.gz"
 
 get() {
