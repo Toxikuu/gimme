@@ -2,7 +2,7 @@ NAME="libxkbcommon"
 VERS="1.7.0"
 TYPE="extra"
 DEPS="xkeyboard-config libxcb wayland wayland-protocols"
-LINK=""
+LINK="https://xkbcommon.org/download/libxkbcommon-$VERS.tar.xz"
 
 get() {
   mkdir -pv build &&
@@ -16,7 +16,7 @@ get() {
 
   ninja && ninja install
 
-  rg -rf *
+  rm -rf *
   CC="gcc -m32" CXX="g++ -m32"         \
   PKG_CONFIG_PATH=/usr/lib32/pkgconfig \
   meson setup ..                       \
